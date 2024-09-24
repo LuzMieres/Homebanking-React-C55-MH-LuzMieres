@@ -1,0 +1,406 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Estilos base para todos los tamaños de pantalla */
+.header,
+.footer {
+  width: 100vw;
+  box-sizing: border-box;
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.scroll-hidden {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  gap: 44px;
+  align-items: center;
+  padding: 1rem;
+  height: 15vh;
+  background-color: #002f6c;
+  /* Azul oscuro BBVA */
+}
+
+h2 {
+  font-size: 30px;
+  color: rgb(29 78 216);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  background-color: #002f6c;
+  transition: top 0.5s ease;
+  z-index: 10;
+}
+
+.nav.show {
+  top: 12.5vh;
+}
+
+.navLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navLinks li {
+  margin: 1rem 0;
+}
+
+.navLinks a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.navLinks a:hover {
+  color: #00b2ff;
+  /* Azul claro BBVA */
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  min-height: 10vh;
+  width: 100vw;
+  background-color: #002f6c;
+  color: #ffffff;
+  text-align: center;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+footer p,
+footer a {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+footer a:hover {
+  color: #00b2ff;
+  /* Azul claro BBVA */
+}
+
+footer img {
+  width: 30px;
+  height: 30px;
+  margin: 0.5rem;
+  filter: brightness(0) invert(1);
+  /* Convertir los logos a blanco */
+}
+
+.card-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-front,
+.card-back {
+  width: 360px;
+  height: 220px;
+  border-radius: 20px;
+  position: relative;
+}
+
+.card-front img,
+.card-back img {
+  width: 360px;
+  height: 220px;
+  border-radius: 20px;
+}
+
+.carousel {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  position: absolute;
+  top: 130vh;
+  width: 100vw;
+  height: 40vh;
+}
+
+.carousel-image {
+  object-fit: cover;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 40vh;
+  transition: opacity 4s ease-in-out;
+}
+
+.visible {
+  opacity: 1;
+  z-index: 1;
+}
+
+.hidden {
+  opacity: 0;
+  z-index: 0;
+}
+
+.ojo {
+  border: none;
+  background-color: transparent;
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Media Queries para pantallas más grandes */
+@media (min-width: 640px) {
+  .card-container {
+    width: 350px;
+  }
+
+  .contenedorCards {
+    flex-direction: row;
+  }
+
+  .carousel {
+    height: 40vh;
+  }
+
+  .carousel-image {
+    height: 40vh;
+  }
+
+  .nav.show {
+    top: 13.5vh;
+  }
+}
+
+@media (min-width: 768px) {
+  .header {
+    gap: 400px;
+  }
+
+  .nav {
+    flex-direction: row;
+    padding: 10px;
+    gap: 40px;
+  }
+
+  .navLinks {
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .navLinks li {
+    margin: 0 1rem;
+  }
+
+  .carousel {
+    height: 50vh;
+    top: 100vh;
+  }
+
+  .carousel-image {
+    height: 50vh;
+  }
+
+  .card-container {
+    max-width: 450px;
+  }
+
+  footer {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  footer p,
+  footer a {
+    font-size: 1.25rem;
+  }
+
+  footer img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .inputRegisterForm {
+    font-size: 15px;
+    height: 35px;
+  }
+
+  .labelInputRegisterForm {
+    margin-bottom: 2px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav {
+    gap: 100px;
+  }
+
+  .navLinks {
+    gap: 50px;
+  }
+
+  .card-container {
+    max-width: 500px;
+  }
+
+  .carousel {
+    height: 60vh;
+    top: 90vh;
+
+  }
+
+  .carousel-image {
+    height: 60vh;
+  }
+
+  footer p,
+  footer a {
+    font-size: 1.5rem;
+  }
+
+  .formRegisterLaptop {
+    gap: 1px;
+  }
+
+  .inputRegisterForm {
+    font-size: 15px;
+    height: 35px;
+  }
+
+  .formLoginLaptop {
+    width: 50vw;
+    height: 95vh;
+    gap: 1;
+    gap: 2rem;
+  }
+
+  .labelInputRegisterForm {
+    margin-bottom: 2px;
+  }
+
+  .divLoginLaptop {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (min-width: 1440px) {
+  .formLoginLaptop {
+    width: 50vw;
+    height: 95vh;
+    gap: 1;
+  }
+
+  .divLoginLaptop {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .select {
+    width: 100%; /* Asegura que el select ocupe todo el ancho disponible */
+    max-width: 100%; /* Limita el ancho máximo del select */
+    overflow: hidden; /* Evita el desbordamiento de los elementos internos */
+  }
+  
+  .select option {
+    max-width: 100%; /* Limita el ancho máximo de los options */
+    overflow: hidden; /* Evita que el contenido de los options se desborde */
+    text-overflow: ellipsis; /* Muestra "..." si el contenido es demasiado largo */
+    white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
+  }
+
+  .carousel {
+    width: 100vw;
+    height: 60vh;
+  }
+
+  .carousel-image {
+    width: 100%;
+    height: 60vh;
+  }
+
+  .nav.show {
+    top: 12.5vh;
+  }
+
+  footer {
+    height: 10vh;
+  }
+
+  .swal-wide {
+    /* Puedes ajustar el porcentaje según necesites */
+    width: 60%;
+    /* O utilizar un ancho fijo en píxeles */
+  }
+}
+
+@media (min-width: 2560px) {
+
+  .card-front img,
+  .card-back img {
+    width: 700px;
+    height: 280px;
+    border-radius: 20px;
+  }
+
+  .card-front,
+  .card-back {
+    width: 700px;
+    height: 280px;
+    border-radius: 20px;
+  }
+
+  .card-container {
+    max-width: 90%;
+  }
+
+  .carousel{
+    top: 60vh;
+  }
+
+}
