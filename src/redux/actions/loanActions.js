@@ -28,7 +28,7 @@ export const requestNewLoanAction = createAsyncThunk(
         }
   
         // Solicitar el préstamo
-        const response = await axios.post("http://localhost:8080/api/loans/apply", {
+        const response = await axios.post("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/loans/apply", {
           loanName,  // Enviar como loanName
           amount,
           payments,

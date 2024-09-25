@@ -49,7 +49,7 @@ function Header() {
           {showNav ? "X" : "≡"}
         </button>
       </header>
-      <nav className={`nav ${showNav ? 'show' : ''} bg-blue-700 z-2`}>
+      <nav className={`nav ${showNav ? 'show' : ''} bg-blue-700 z-10`}>
         <ul className='navLinks text-white'>
           <li>
             <NavLink 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/style.css';
 
-const CardCarousel = ({ cards }) => {
+const CardCarousel = ({ cards, selectedCardType, handleCardTypeChange }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Función para ir a la siguiente tarjeta
@@ -9,32 +9,46 @@ const CardCarousel = ({ cards }) => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % cards.length);
   };
 
-  // Función para ir a la tarjeta anterior
-  const prevCard = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + cards.length) % cards.length);
-  };
-
   return (
-    <div className="w-full h-[100vh] flex items-center justify-center relative top-[60px] overflow-hidden">
-      {/* Botón anterior */}
-      <button
-        onClick={prevCard}
-        className="absolute left-[20px] top-[20px] transform -translate-y-1/2 text-white bg-blue-800 hover:bg-blue-600 px-3 text-3xl rounded-lg transition-transform transform-gpu hover:-translate-x-2 z-1"
-      >
-        &#8249;
-      </button>
+    <div className="bg-gray-300 rounded-xl absolute top-[190px] flex flex-col justify-center items-center p-[20px] w-full md:w-[90%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%] mx-auto my-4">
+      
+      {/* Contenedor para los radios de selección del tipo de tarjeta */}
+      <div className="flex items-center justify-center mb-4">
+        <label className="flex items-center gap-2 mx-2 text-sm lg:text-lg 2xl:text-2xl">
+          <input
+            type="radio"
+            name="cardType"
+            value="CREDIT"
+            checked={selectedCardType === "CREDIT"}
+            onChange={handleCardTypeChange}
+            className="form-radio text-blue-600"
+          />
+          CREDIT
+        </label>
+        <label className="flex items-center gap-2 mx-2 text-sm lg:text-lg 2xl:text-2xl">
+          <input
+            type="radio"
+            name="cardType"
+            value="DEBIT"
+            checked={selectedCardType === "DEBIT"}
+            onChange={handleCardTypeChange}
+            className="form-radio text-blue-600"
+          />
+          DEBIT
+        </label>
+      </div>
 
       {/* Contenedor principal para centrar la tarjeta */}
-      <div className="w-full h-[400px] flex justify-center items-center relative ">
+      <div className="w-full lg:h-[400px] flex justify-center items-center overflow-hidden">
         <div
           className="w-full flex transition-transform duration-700 ease-in-out"
-          style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
+          style={{ transform: `translateX(-${currentImageIndex * 100}%)`, width: `${cards.length * 100}%` }} // Ajustar el ancho total
         >
           {cards.map((card) => (
             <div
               key={card.id}
               className="w-full flex justify-center items-center"
-              style={{ minWidth: '100%' }}
+              style={{ minWidth: '100%' }} // Asegurar que cada tarjeta ocupe el 100% del contenedor
             >
               {/* Contenedor para mostrar frente y dorso juntos */}
               <div className="card-pair flex flex-col md:flex-row justify-center items-center gap-4">
@@ -91,9 +105,10 @@ const CardCarousel = ({ cards }) => {
       {/* Botón siguiente */}
       <button
         onClick={nextCard}
-        className="absolute right-[20px] top-[20px] transform -translate-y-1/2 text-white bg-blue-800 hover:bg-blue-600 px-3 text-3xl rounded-lg transition-transform transform-gpu hover:translate-x-2 z-1"
+        className="mt-4 text-white bg-blue-800 hover:bg-blue-600 p-3 text-xl rounded-lg transition-transform transform-gpu hover:translate-y-1"
+        disabled={cards.length <= 1} // Deshabilitar el botón si hay una o ninguna tarjeta
       >
-        &#8250;
+        Next Card
       </button>
     </div>
   );

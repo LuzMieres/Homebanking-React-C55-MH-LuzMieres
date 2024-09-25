@@ -36,7 +36,7 @@ export const requestNewCardAction = createAsyncThunk(
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/api/cards/clients/current/cards", {
+      const response = await axios.post("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/cards/clients/current/cards", {
         type: type,
         color: color,
       }, {

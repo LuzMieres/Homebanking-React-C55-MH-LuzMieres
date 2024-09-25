@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Swal from 'sweetalert2'; // Importar SweetAlert2
+import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import '../styles/style.css';
+import { useDispatch } from 'react-redux';
+import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction';
 
 export const transactionsArray = [];
 export const savedAccounts = JSON.parse(localStorage.getItem('savedAccounts')) || []; // Array global para cuentas agendadas, cargado desde localStorage
@@ -13,7 +15,6 @@ function NewTransactionData() {
     sourceAccount: '',
     destinationAccount: '',
     amount: '',
-    description: ''
   });
   const [client, setClient] = useState(null);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -23,6 +24,7 @@ function NewTransactionData() {
   const [serverError, setServerError] = useState('');
   const [contactAccounts, setContactAccounts] = useState(savedAccounts);
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // Mover useDispatch aquí
 
   useEffect(() => {
     obtenerClient();
@@ -112,22 +114,22 @@ function NewTransactionData() {
 
   function handleSubmit(event) {
     event.preventDefault();
-
-    if (!formData.sourceAccount || !formData.destinationAccount || !formData.amount || !formData.description) {
+  
+    if (!formData.sourceAccount || !formData.destinationAccount || !formData.amount) {
       alert("Please fill in all required fields.");
       return;
     }
-
+  
     if (amountError) {
       alert("The amount exceeds the available balance.");
       return;
     }
-
+  
     if (amountInvalid) {
       alert("Please enter a valid amount.");
       return;
     }
-
+  
     // Mostrar SweetAlert con los detalles de la transacción
     Swal.fire({
       title: 'Confirm Transaction',
@@ -136,7 +138,6 @@ function NewTransactionData() {
         <p>Source Account: <strong>${formData.sourceAccount}</strong></p>
         <p>Destination Account: <strong>${formData.destinationAccount}</strong></p>
         <p>Amount: <strong>$${parseFloat(formData.amount).toFixed(2)}</strong></p>
-        <p>Description: <strong>${formData.description}</strong></p>
       `,
       icon: 'warning',
       showCancelButton: true,
@@ -149,9 +150,8 @@ function NewTransactionData() {
           originAccountNumber: formData.sourceAccount,
           destinationAccountNumber: formData.destinationAccount,
           amount: parseFloat(formData.amount),
-          description: formData.description,
         };
-
+  
         axios.post("http://localhost:8080/api/transactions/", newTransaction, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -165,6 +165,9 @@ function NewTransactionData() {
               icon: 'success',
               confirmButtonText: 'OK'
             }).then(() => {
+              // Actualizar el estado del cliente
+              dispatch(loadCurrentUserAction()); // Aquí usamos dispatch, no useDispatch directamente
+              
               // Preguntar si se desea guardar la cuenta de destino en contactos, si es distinta de "Own"
               if (formData.accountType === 'Other' && !savedAccounts.includes(formData.destinationAccount)) {
                 Swal.fire({
@@ -196,12 +199,13 @@ function NewTransactionData() {
       }
     });
   }
+  
 
   if (!client) {
     return <div className="text-center text-gray-600">Loading...</div>;
   }
 
-  const isFormValid = formData.sourceAccount && formData.destinationAccount && formData.amount && formData.description && !amountError && !amountInvalid;
+  const isFormValid = formData.sourceAccount && formData.destinationAccount && formData.amount && !amountError && !amountInvalid;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full p-4">
@@ -333,18 +337,6 @@ function NewTransactionData() {
                 Available balance: ${selectedAccount.balance.toFixed(2)}
               </p>
             )}
-          </div>
-          
-          {/* Campo para la descripción */}
-          <div className="w-full">
-            <label className="text-gray-700 text-xs sm:text-xs md:text-xs lg:text-sm 2xl:text-2xl block mb-1" htmlFor="description">Description</label>
-            <textarea
-              className="w-full h-10 p-1 bg-blue-700 text-white text-xs sm:text-xs md:text-xs lg:text-sm 2xl:text-2xl rounded"
-              name="description"
-              id="description"
-              value={formData.description}
-              onChange={e => setFormData({ ...formData, description: e.target.value })}
-            ></textarea>
           </div>
           
           {/* Botón de envío */}

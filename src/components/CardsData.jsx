@@ -1,4 +1,3 @@
-// src/components/CardsData.js
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +12,13 @@ function CardsData() {
 
   // Estado local para controlar el tipo de tarjeta seleccionado
   const [selectedCardType, setSelectedCardType] = useState("CREDIT");
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Definir los límites por tipo (sin considerar color)
+  const cardLimitPerType = {
+    CREDIT: 3, // Limitar a 3 tarjetas de crédito (una de cada color)
+    DEBIT: 3,  // Limitar a 3 tarjetas de débito (una de cada color)
+  };
 
   useEffect(() => {
     if (status === 'idle') {
@@ -20,9 +26,27 @@ function CardsData() {
     }
   }, [dispatch, status]);
 
-  // Función para manejar el cambio en el select
+  // Función para manejar el cambio en los inputs radio de tipo de tarjeta
   const handleCardTypeChange = (event) => {
     setSelectedCardType(event.target.value);
+    setErrorMessage(''); // Limpiar el mensaje de error al cambiar el tipo de tarjeta
+  };
+
+  // Función para manejar la solicitud de una nueva tarjeta
+  const handleRequestNewCard = () => {
+    // Verificar cuántas tarjetas del tipo seleccionado ya tiene el cliente (sin importar color)
+    const cardCountByType = client.cards.filter(
+      card => card.type === selectedCardType
+    ).length;
+
+    // Verificar si ya ha alcanzado el límite
+    if (cardCountByType >= cardLimitPerType[selectedCardType]) {
+      setErrorMessage(`You already have ${cardLimitPerType[selectedCardType]} ${selectedCardType.toLowerCase()} cards.`);
+      return;
+    }
+
+    // Redirigir a la página para solicitar una nueva tarjeta
+    navigate('/newCard');
   };
 
   if (status === 'loading') {
@@ -44,48 +68,39 @@ function CardsData() {
   // Depuración para ver tarjetas filtradas
   console.log("Filtered Cards:", filteredCards);
 
-  // Deshabilitar botón si el total de tarjetas es 6 o más
-  const totalCards = client.cards.length;
-  const isMaxCardsReached = totalCards >= 6;
+  // Verificar si el cliente ya alcanzó el límite de tarjetas del tipo seleccionado
+  const cardCountByType = client.cards.filter(card => card.type === selectedCardType).length;
+  const isMaxCardsReached = cardCountByType >= cardLimitPerType[selectedCardType];
 
   return (
     <main className="contenedorPrincipalCards flex flex-col w-full justify-center items-center min-h-screen overflow-hidden mt-20px">
-      {/* Mostrar mensaje en rojo si se alcanzó el máximo de tarjetas */}
-      {isMaxCardsReached && (
-        <p className="text-red-500 mt-1 text-center text-xs sm:text-xs md:text-sm lg:text-sm xl:text-lg 2xl:text-3xl absolute bottom-[-180px]">
-          You already have the maximum number of cards you can request.
-        </p>
-      )}
-
-      {/* Select para filtrar por tipo de tarjeta */}
-      <div className="flex justify-center absolute top-[126px] xl:top-[200px] 2xl:top-[300px] w-full gap-2 md:gap-10">
-        <label className="text-lg font-bold 2xl:text-3xl">Card type:</label>
-        <select
-          value={selectedCardType}
-          onChange={handleCardTypeChange}
-          className="border bg-blue-800 border-gray-300 z-1 p-2 rounded-md text-white 2xl:text-3xl"
-        >
-          <option value="CREDIT">CREDIT</option>
-          <option value="DEBIT">DEBIT</option>
-        </select>
-      </div>
-
+      
       {/* Mostrar el carrusel solo si hay tarjetas */}
       {filteredCards.length > 0 ? (
-        <CardCarousel cards={filteredCards} />
+        <CardCarousel cards={filteredCards} selectedCardType={selectedCardType} handleCardTypeChange={handleCardTypeChange} />
       ) : (
-        <p className="text-xl text-gray-500">No {selectedCardType.toLowerCase()} cards available.</p>
+        <p className="text-xl text-gray-500 mt-[300px] 2xl:mt-[400px]">No {selectedCardType.toLowerCase()} cards available.</p>
       )}
 
-      {/* Quitar botón si se alcanzó el máximo de tarjetas */}
-      {!isMaxCardsReached && (
+      {/* Botón para solicitar nueva tarjeta y mensaje de error */}
+      <div className="flex flex-col items-center mt-8">
         <button
-          className="w-[40%] sm:w-[20%] md:w-[20%] lg:w-[20%] 2xl:w-[15%] p-2 sm:p-2 md:p-2 lg:p-2 2xl:p-6 bg-blue-800 text-xs md:text-sm lg:text-sm text-white 2xl:text-[40px] rounded hover:bg-blue-600 transition-colors duration-300 absolute bottom-[-250px] 2xl:bottom-[-100px]"
-          onClick={() => navigate('/newCard')}
+          onClick={handleRequestNewCard}
+          className={`absolute bottom-[-310px] md:bottom-[-130px] lg:bottom-[-320px] xl:bottom-[-130px] 2xl:bottom-[420px] 2xl:text-3xl p-3 rounded text-white ${
+            isMaxCardsReached ? "bg-gray-400 cursor-not-allowed" : "bg-blue-800 text-white hover:bg-blue-600"
+          }`}
+          disabled={isMaxCardsReached} // Deshabilitar si ya alcanzó el límite de tarjetas
         >
           Request New Card
         </button>
-      )}
+        
+        {/* Mostrar mensaje de error si el cliente ya tiene el máximo de tarjetas del tipo seleccionado */}
+        {isMaxCardsReached && (
+          <p className="text-red-500 mt-2 absolute bottom-[-340px] md:bottom-[-160px] lg:bottom-[-350px] xl:bottom-[-160px] 2xl:bottom-[350px] 2xl:text-3xl">
+            You already have {cardLimitPerType[selectedCardType]} {selectedCardType.toLowerCase()} cards.
+          </p>
+        )}
+      </div>
     </main>
   );
 }

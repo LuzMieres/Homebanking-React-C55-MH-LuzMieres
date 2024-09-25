@@ -1,4 +1,3 @@
-// src/components/AccountDetails.js
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -68,62 +67,68 @@ function AccountDetails() {
   }));
 
   return (
-    <div className="w-full min-h-[90vh] flex flex-col items-center gap-10">
-      {/* Información principal de la cuenta */}
-      <div className="w-full flex flex-col items-center justify-center">
-        <h2 className="text-xl md:text-2xl lg:text-3xl xl:rext[40px] 2xl:text-[50px]">
-          Your selected account {account.number}
-        </h2>
-        <div className="flex justify-center items-center w-[70%] h-[100px] md:w-[50%] md:h-[100px] lg:w-[40%] xl:w-[30%] 2xl:w-[40%] 2xl:h-[100px] bg-blue-600 rounded-lg shadow-2xl text-white gap-2 text-xl md:text-2xl lg:text-3xl xl:text[40px] 2xl:text-[50px] absolute top-[150px] md:top-[150px] lg:top-[150px] xl:top-[200px] 2xl:top-[300px]">
-          <strong className="text-xl md:text-2xl lg:text-3xl xl:rext[40px] 2xl:text-[50px]">Balance:</strong>{" "}
-          {showBalance ? formatAmountToARS(account.balance) : "••••••••"}
-          <button
-            type="button"
-            onClick={() => setShowBalance(!showBalance)} // Alternar la visualización del balance
-            className="w-10 h-10"
-          >
-            <img
-              src={
-                showBalance
-                  ? "https://img.icons8.com/?size=100&id=14744&format=png&color=000000"
-                  : "https://img.icons8.com/?size=100&id=13758&format=png&color=000000"
-              }
-              alt={showBalance ? "Hide balance" : "Show balance"}
-            />
-          </button>
+    <div className="w-full flex justify-center items-center min-h-[90vh]">
+      <div className="bg-gray-200 rounded-xl p-[20px] w-[80%] flex flex-col items-center gap-10 shadow-xl">
+        {/* Información principal de la cuenta */}
+        <div className="w-full flex flex-col items-center justify-center relative">
+          <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-[40px] 2xl:text-[50px]">
+            Your selected account {account.number}
+          </h2>
+          <div className="flex justify-center items-center w-[80%] h-[100px] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] bg-blue-600 rounded-lg shadow-2xl text-white gap-2 text-xl md:text-2xl lg:text-3xl xl:text-[40px] 2xl:text-[50px] mt-[20px]">
+            <strong className="text-xl md:text-2xl lg:text-3xl xl:text-[40px] 2xl:text-[50px]">Balance:</strong>{" "}
+            {showBalance ? formatAmountToARS(account.balance) : "••••••••"}
+            <button
+              type="button"
+              onClick={() => setShowBalance(!showBalance)} // Alternar la visualización del balance
+              className="w-10 h-10"
+            >
+              <img
+                src={
+                  showBalance
+                    ? "https://img.icons8.com/?size=100&id=14744&format=png&color=000000"
+                    : "https://img.icons8.com/?size=100&id=13758&format=png&color=000000"
+                }
+                alt={showBalance ? "Hide balance" : "Show balance"}
+              />
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Mostrar las transacciones si hay alguna disponible */}
-      {simplifiedAccount.length > 0 ? (
-        <table className="table-auto w-[90%] bg-blue-700 rounded-lg shadow-2xl">
-          <thead>
-            <tr>
-              <th className="text-xs text-white border border-white p-2">DATE</th>
-              <th className="text-xs text-white border border-white p-2">HOUR</th>
-              <th className="text-xs text-white border border-white p-2">TYPE</th>
-              <th className="text-xs text-white border border-white p-2">AMOUNT</th>
-              <th className="text-xs text-white border border-white p-2">DESCRIPTION</th>
-            </tr>
-          </thead>
-          <tbody>
-            {simplifiedAccount.map((transaction, index) => (
-              <tr
-                key={index}
-                className={`even:bg-blue-600 odd:bg-blue-500 border border-gray-300 ${transaction.type.toLowerCase()}`}
-              >
-                <td className="text-xs text-white border border-white p-2">{transaction.date}</td>
-                <td className="text-xs text-white border border-white p-2">{transaction.hour}</td>
-                <td className="text-xs text-white border border-white p-2">{transaction.type}</td>
-                <td className="text-xs text-white border border-white p-2">{formatAmountToARS(transaction.amount)}</td>
-                <td className="text-xs text-white border border-white p-2">{transaction.description}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p className="no-transactions absolute top-[300px] md:top-[400px] lg:top-[300px] xl:top-[400px] 2xl:top-[500px] 2xl:text-[50px]">No transactions available for this account.</p>
-      )}
+        {/* Mostrar las transacciones si hay alguna disponible */}
+        {simplifiedAccount.length > 0 ? (
+          <div className="w-full flex justify-center">
+            <table className="table-auto w-[90%] bg-blue-700 rounded-lg shadow-2xl">
+              <thead>
+                <tr>
+                  <th className="text-xs text-white border border-white p-2">DATE</th>
+                  <th className="text-xs text-white border border-white p-2">HOUR</th>
+                  <th className="text-xs text-white border border-white p-2">TYPE</th>
+                  <th className="text-xs text-white border border-white p-2">AMOUNT</th>
+                  <th className="text-xs text-white border border-white p-2">DESCRIPTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                {simplifiedAccount.map((transaction, index) => (
+                  <tr
+                    key={index}
+                    className={`even:bg-blue-600 odd:bg-blue-500 border border-gray-300 ${transaction.type.toLowerCase()}`}
+                  >
+                    <td className="text-xs text-white border border-white p-2">{transaction.date}</td>
+                    <td className="text-xs text-white border border-white p-2">{transaction.hour}</td>
+                    <td className="text-xs text-white border border-white p-2">{transaction.type}</td>
+                    <td className="text-xs text-white border border-white p-2">{formatAmountToARS(transaction.amount)}</td>
+                    <td className="text-xs text-white border border-white p-2">{transaction.description}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="no-transactions text-xl md:text-2xl lg:text-3xl xl:text-[40px] 2xl:text-[50px] mt-10">
+            No transactions available for this account.
+          </p>
+        )}
+      </div>
     </div>
   );
 }

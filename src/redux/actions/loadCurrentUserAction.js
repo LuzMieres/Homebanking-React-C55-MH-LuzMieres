@@ -12,7 +12,7 @@ export const loadCurrentUserAction = createAsyncThunk(
     }
 
     try {
-      const response = await axios.get("http://localhost:8080/api/auth/current", {
+      const response = await axios.get("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/auth/current", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

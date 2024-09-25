@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { requestNewLoanAction } from '../redux/actions/loanActions';
 import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction';
 import '../styles/style.css';
+import { LoanContext } from '../context/LoanContext'; // Importar el contexto
 
 const availableLoans = [
   {
@@ -31,10 +32,11 @@ function NewLoanData() {
     amount: '',
     payments: '',
   });
-  
+
+  const { setSelectedAccount } = useContext(LoanContext); // Usar el contexto para actualizar selectedAccount
   const [selectedLoan, setSelectedLoan] = useState(null);
-  const [amountError, setAmountError] = useState(false); // Verificar si el monto excede el máximo permitido
-  const [isFormValid, setIsFormValid] = useState(false); // Estado para verificar si el formulario es válido
+  const [amountError, setAmountError] = useState(false); 
+  const [isFormValid, setIsFormValid] = useState(false); 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { client, status, error } = useSelector((state) => state.currentUser);
@@ -55,7 +57,6 @@ function NewLoanData() {
     }
   }, [error]);
 
-  // Actualizar el estado del formulario en función de la validez de los campos
   useEffect(() => {
     const isValid = formData.name && formData.sourceAccount && formData.amount && formData.payments && !amountError;
     setIsFormValid(isValid);
@@ -73,29 +74,30 @@ function NewLoanData() {
     }));
     setAmountError(false);
   }
-  
+
   function handleAccountChange(event) {
     const selectedAccount = event.target.value;
     setFormData(prevState => ({
       ...prevState,
       sourceAccount: selectedAccount,
     }));
+    setSelectedAccount(selectedAccount); // Actualizar la cuenta seleccionada en el contexto
   }
-  
+
   function handleAmountChange(event) {
     const enteredAmount = parseFloat(event.target.value);
     setFormData(prevState => ({
       ...prevState,
       amount: event.target.value,
     }));
-  
+
     if (selectedLoan && enteredAmount > selectedLoan.maxAmount) {
       setAmountError(true);
     } else {
       setAmountError(false);
     }
   }
-  
+
   function handlePaymentsChange(event) {
     const selectedPayments = event.target.value;
     setFormData(prevState => ({
@@ -106,7 +108,7 @@ function NewLoanData() {
 
   function handleSubmit(event) {
     event.preventDefault();
-  
+
     if (!isFormValid) {
       Swal.fire({
         icon: 'warning',
@@ -115,7 +117,7 @@ function NewLoanData() {
       });
       return;
     }
-  
+
     if (amountError) {
       Swal.fire({
         icon: 'error',
@@ -124,14 +126,14 @@ function NewLoanData() {
       });
       return;
     }
-  
+
     const newLoan = {
       loanName: formData.name,
       amount: parseFloat(formData.amount),
       payments: formData.payments,
       destinationAccountNumber: formData.sourceAccount,
     };
-  
+
     dispatch(requestNewLoanAction(newLoan)).then((result) => {
       if (result.meta.requestStatus === 'fulfilled') {
         dispatch(loadCurrentUserAction()).then(() => {
@@ -149,7 +151,7 @@ function NewLoanData() {
       }
     });
   }
-  
+
   if (!client) {
     return <div className="text-center text-gray-600">Loading...</div>;
   }

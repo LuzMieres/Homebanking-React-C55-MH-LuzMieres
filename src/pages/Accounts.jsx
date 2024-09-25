@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import AccountsData from '../components/AccountsData';
 import '../styles/style.css';
-import Carrousel from '../components/Carrousel';
 import { useNavigate } from 'react-router-dom';
 
 function Accounts() {
@@ -28,7 +27,6 @@ function Accounts() {
       <h3 className="text-xl sm:text-xl md:text-xl text-blue-800 lg:text-3xl xl:text-[40px] 2xl:text-[50px] mb-5">Your Accounts</h3>
       <div className="w-full flex flex-col items-center gap-6 xl:justify-between xl:min-h-[70vh]">
         <AccountsData />
-        <Carrousel />
       </div>
     </div>
   );

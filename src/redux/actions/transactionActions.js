@@ -29,7 +29,7 @@ export const createTransactionAction = createAsyncThunk(
         }
   
         // Realizar la transacción
-        const response = await axios.post("http://localhost:8080/api/transactions/", {
+        const response = await axios.post("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/transactions/", {
           sourceAccount,
           destinationAccount,
           amount,

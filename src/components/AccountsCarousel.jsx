@@ -9,32 +9,19 @@ const AccountsCarousel = ({ accounts, onAccountClick }) => {
     setCurrentAccountIndex((prevIndex) => (prevIndex + 1) % accounts.length);
   };
 
-  // Función para ir a la cuenta anterior
-  const prevAccount = () => {
-    setCurrentAccountIndex((prevIndex) => (prevIndex - 1 + accounts.length) % accounts.length);
-  };
-
   return (
-    <div className="w-full h-screen flex items-center justify-center relative top-[40px] overflow-hidden">
-      {/* Botón anterior */}
-      <button
-        onClick={prevAccount}
-        className="absolute left-[20px] top-[20px] transform -translate-y-1/2 text-white bg-blue-800 hover:bg-blue-600 px-3 text-3xl rounded-lg transition-transform transform-gpu hover:-translate-x-2 z-10"
-      >
-        &#8249;
-      </button>
-
+    <div className="bg-gray-300 rounded-xl absolute top-[190px] xl:top-[260px] 2xl:top-[400px] flex flex-col justify-center items-center p-[20px] w-full md:w-[90%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%] mx-auto my-4">
       {/* Contenedor principal para centrar la cuenta */}
-      <div className="w-full lg:h-[200px] flex justify-center items-center relative top-[-70px] lg:pt-[100px] pt-[80px] md:top-[-150px] lg:top-[-180px] xl:top-[-250px] 2xl:top-[-550px]">
+      <div className="w-full lg:h-[200px] flex justify-center items-center overflow-hidden">
         <div
           className="w-full flex transition-transform duration-700 ease-in-out"
-          style={{ transform: `translateX(-${currentAccountIndex * 100}%)` }}
+          style={{ transform: `translateX(-${currentAccountIndex * 100}%)`, width: `${accounts.length * 100}%` }} // Ajustar el ancho total
         >
           {accounts.map((account) => (
             <div
               key={account.id}
               className="w-full flex justify-center items-center"
-              style={{ minWidth: '100%' }}
+              style={{ minWidth: '100%' }} // Asegurar que cada cuenta ocupe el 100% del contenedor
             >
               {/* Contenedor de la tarjeta de cuenta */}
               <div
@@ -59,9 +46,10 @@ const AccountsCarousel = ({ accounts, onAccountClick }) => {
       {/* Botón siguiente */}
       <button
         onClick={nextAccount}
-        className="absolute right-[20px] top-[20px] transform -translate-y-1/2 text-white bg-blue-800 hover:bg-blue-600 px-3 text-3xl rounded-lg transition-transform transform-gpu hover:translate-x-2 z-10"
+        className="mt-4 text-white bg-blue-800 hover:bg-blue-600 p-3 text-xl rounded-lg transition-transform transform-gpu hover:translate-y-1"
+        disabled={accounts.length <= 1} // Deshabilitar el botón si hay una o ninguna cuenta
       >
-        &#8250;
+        Next Account
       </button>
     </div>
   );

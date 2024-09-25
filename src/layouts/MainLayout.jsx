@@ -15,7 +15,7 @@ function MainLayout() {
         <Outlet />
       </div>
       
-      <Footer className="absolute top-[170vh] md:top-[150vh] lg:top-[150vh] 2xl:top-[120vh]" /> {/* Footer se coloca automáticamente al final del contenedor principal */}
+      <Footer className="absolute top-[170vh] md:top-[150vh] lg:top-[180vh] 2xl:top-[120vh]" /> {/* Footer se coloca automáticamente al final del contenedor principal */}
     </div>
   );
 }
