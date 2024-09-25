@@ -20,7 +20,17 @@ export const changePasswordAction = createAsyncThunk(
           },
         }
       );
-
+    // try {
+    //   const response = await axios.post(
+    //     "https://localhost:8080/api/auth/current/change-password",
+    //     { currentPassword, newPassword },
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     }
+    //   );
+      
       return response.data; // Mensaje de éxito
     } catch (error) {
       console.error("Error al cambiar la contraseña:", error);

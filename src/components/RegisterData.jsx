@@ -93,6 +93,13 @@ function RegisterData() {
       email: formData.email,
       password: formData.password,
     })
+    // axios.post("https://localhost:8080/api/auth/register", {
+    //   firstName: formData.name,
+    //   lastName: formData.lastName, // Cambio de lastName para asegurar que se pase correctamente
+    //   email: formData.email,
+    //   password: formData.password,
+    // })
+    
       .then(response => {
         registerArray.push(response.data.account);
         Swal.fire({

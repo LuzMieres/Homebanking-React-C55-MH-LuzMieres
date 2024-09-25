@@ -8,18 +8,18 @@ function Footer({ className = "" }) {
     >
       <div className="flex justify-between items center w-full">
         <div className="flex flex-col md:flex-row lg:flex-row xl:flex-row md:justify-center md:items-center md:gap-5 lg:justify-center lg:items-center lg:gap-8 xl:justify-center xl:items-center xl:gap-10">
-          <p className="text-sm sm:text-xl md:text-xs lg:text-xl xl:text-xl 2xl:text-[50px]">
+          <p className="text-sm sm:text-xl md:text-xs lg:text-xl xl:text-xl 2xl:text-[30px]">
             © 2023. All rights reserved.
           </p>
           <a
-            className="text-sm sm:text-xl md:text-xs lg:text-xl xl:text-xl 2xl:text-[50px]"
+            className="text-sm sm:text-xl md:text-xs lg:text-xl xl:text-xl 2xl:text-[30px]"
             href="https://www.linkedin.com/in/luz-mieres-617300324/"
             target="_blank" // Abrir en una nueva ventana
             rel="noopener noreferrer" // Seguridad adicional
           >
             Linkedin: Luz Mieres
           </a>
-          <p className="text-sm sm:text-xl md:text-xs lg:text-xl xl:text-xl 2xl:text-[50px]">
+          <p className="text-sm sm:text-xl md:text-xs lg:text-xl xl:text-xl 2xl:text-[30px]">
             MindHub - CoHort 55
           </p>
         </div>
@@ -30,7 +30,7 @@ function Footer({ className = "" }) {
             rel="noopener noreferrer" // Seguridad adicional
           >
             <img
-              className="w-8 h-8 sm:w-10 sm:h-10 lg:w-10 lg:h-10 xl:w-14 xl:h-14 2xl:w-20 2xl:h-20 rounded-full"
+              className="w-8 h-8 sm:w-10 sm:h-10 lg:w-10 lg:h-10 xl:w-14 xl:h-14 2xl:w-14 2xl:h-14 rounded-full"
               src="https://img.icons8.com/?size=100&id=118468&format=png&color=000000"
               alt="logo facebook"
             />
@@ -41,7 +41,7 @@ function Footer({ className = "" }) {
             rel="noopener noreferrer" // Seguridad adicional
           >
             <img
-              className="w-8 h-8 sm:w-10 sm:h-10 lg:w-10 lg:h-10 xl:w-14 xl:h-14 2xl:w-20 2xl:h-20 rounded-full"
+              className="w-8 h-8 sm:w-10 sm:h-10 lg:w-10 lg:h-10 xl:w-14 xl:h-14 2xl:w-14 2xl:h-14 rounded-full"
               src="https://img.icons8.com/?size=100&id=WDlIZj1YGQtm&format=png&color=000000"
               alt="logo instagram"
             />
@@ -52,7 +52,7 @@ function Footer({ className = "" }) {
             rel="noopener noreferrer" // Seguridad adicional
           >
             <img
-              className="w-8 h-8 sm:w-10 sm:h-10 lg:w-10 lg:h-10 xl:w-14 xl:h-14 2xl:w-20 2xl:h-20 rounded-full"
+              className="w-8 h-8 sm:w-10 sm:h-10 lg:w-10 lg:h-10 xl:w-14 xl:h-14 2xl:w-14 2xl:h-14 rounded-full"
               src="https://img.icons8.com/?size=100&id=16712&format=png&color=000000"
               alt="logo whatsapp"
             />

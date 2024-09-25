@@ -53,6 +53,7 @@ function NewAccountForm() {
         <form onSubmit={handleSubmit} className="flex flex-col items-center justify-around w-full md:w-1/2 gap-1 lg:h-[60vh] pt-1">
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <div className=" flex flex-col justify-center items-center mb-4 w-full h-full">
+          <h3 className="text-xl text-blue-800">Select the type of account you wish to apply for</h3>
           <label className="text-gray-700 text-xl">Account Type</label>
           <select
             value={accountType}

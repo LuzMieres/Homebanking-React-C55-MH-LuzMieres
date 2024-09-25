@@ -86,8 +86,8 @@ function LoansData() {
         <div style="text-align: left;">
           <p><strong>Loan Type:</strong> ${loan.loanType || loan.name}</p>
           <p><strong>Amount:</strong> ${formatAmountToARS(loan.amount)}</p>
-          <p><strong>Credited Amount:</strong> ${calculateCreditedAmount(loan)}</p>
-          <p><strong>Total with Interest:</strong> ${calculateTotalAmount(loan)}</p>
+          <p><strong>Credited Amount:</strong> ${formatAmountToARS(loan.amount)}</p>
+          <p><strong>Total with Interest:</strong> ${calculateCreditedAmount(loan)}</p>
           <p><strong>Payments:</strong> ${Array.isArray(loan.payments) ? loan.payments.join(', ') : loan.payments}</p>
           <p><strong>Remaining Payments:</strong> ${remainingPayments}</p>
           <p><strong>Deposit Account:</strong> ${selectedAccount || 'N/A'}</p> <!-- Usar selectedAccount del contexto -->
@@ -137,7 +137,7 @@ function LoansData() {
                     {formatAmountToARS(loan.amount)}
                   </td>
                   <td className="p-2 text-start border border-gray-300 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-3xl">
-                    {calculateCreditedAmount(loan)}
+                    {formatAmountToARS(loan.amount)}
                   </td>
                   <td className="p-2 text-start border border-gray-300 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-3xl">
                     {calculateTotalAmount(loan)}

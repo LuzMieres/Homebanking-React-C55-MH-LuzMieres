@@ -14,6 +14,15 @@ export const newAccountAction = (accountType) => async (dispatch) => {
         },
       }
     );
+    // await axios.post(
+    //   "https://localhost:8080/api/accounts/clients/current/accounts",
+    //   { type: accountType },
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //     },
+    //   }
+    // );
     dispatch(loadCurrentUserAction());
   } catch (error) {
     console.error(

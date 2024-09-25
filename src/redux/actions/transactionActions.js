@@ -40,7 +40,18 @@ export const createTransactionAction = createAsyncThunk(
             Authorization: `Bearer ${token}`
           }
         });
-  
+        // const response = await axios.post("https://localhost:8080/api/transactions/", {
+        //   sourceAccount,
+        //   destinationAccount,
+        //   amount,
+        //   description,
+        //   accountType
+        // }, {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`
+        //   }
+        // });
+        
         return response.data; // Devuelve los datos de la transacción creada
       } catch (error) {
         console.error("Error en la solicitud de transacción:", error.response?.data || error.message);

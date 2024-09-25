@@ -114,22 +114,22 @@ function NewTransactionData() {
 
   function handleSubmit(event) {
     event.preventDefault();
-  
+
     if (!formData.sourceAccount || !formData.destinationAccount || !formData.amount) {
       alert("Please fill in all required fields.");
       return;
     }
-  
+
     if (amountError) {
       alert("The amount exceeds the available balance.");
       return;
     }
-  
+
     if (amountInvalid) {
       alert("Please enter a valid amount.");
       return;
     }
-  
+
     // Mostrar SweetAlert con los detalles de la transacción
     Swal.fire({
       title: 'Confirm Transaction',
@@ -151,12 +151,17 @@ function NewTransactionData() {
           destinationAccountNumber: formData.destinationAccount,
           amount: parseFloat(formData.amount),
         };
-  
+
         axios.post("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/transactions/", newTransaction, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         })
+        // axios.post("https://localhost:8080/api/transactions/", newTransaction, {
+        //   headers: {
+        //     'Authorization': `Bearer ${localStorage.getItem('token')}`
+        //   }
+        // })
           .then(response => {
             // Mostrar mensaje de éxito
             Swal.fire({
@@ -167,7 +172,7 @@ function NewTransactionData() {
             }).then(() => {
               // Actualizar el estado del cliente
               dispatch(loadCurrentUserAction()); // Aquí usamos dispatch, no useDispatch directamente
-              
+
               // Preguntar si se desea guardar la cuenta de destino en contactos, si es distinta de "Own"
               if (formData.accountType === 'Other' && !savedAccounts.includes(formData.destinationAccount)) {
                 Swal.fire({
@@ -204,7 +209,7 @@ function NewTransactionData() {
       }
     });
   }
-  
+
   if (!client) {
     return <div className="text-center text-gray-600">Loading...</div>;
   }
@@ -264,7 +269,7 @@ function NewTransactionData() {
               value={formData.sourceAccount}
               onChange={handleSourceAccountChange}
             >
-              <option className='text-white 2xl:text-2xl w-[50%]' value="" disabled>Select a source account</option>
+              <option className='text-white 2xl:text-2xl w-[50%]' value="" disabled>Select a source account:</option>
               {client.accounts.map(account => (
                 <option className='w-[50%] 2xl:text-2xl' key={account.number} value={account.number}>{account.number}</option>
               ))}
@@ -283,7 +288,7 @@ function NewTransactionData() {
                 value={formData.destinationAccount}
                 onChange={handleDestinationAccountChange}
               >
-                <option className='text-white 2xl:text-2xl w-[50%]' value="" disabled>Select a destination account</option>
+                <option className='text-white 2xl:text-2xl w-[50%]' value="" disabled>Select a destination account:</option>
                 {client.accounts
                   .filter(account => account.number !== formData.sourceAccount) // Excluir la cuenta de origen
                   .map(account => (
@@ -313,7 +318,7 @@ function NewTransactionData() {
                 value={formData.destinationAccount}
                 onChange={handleDestinationAccountChange}
               >
-                <option className='text-white 2xl:text-2xl w-full' value="" disabled>Select a saved account</option>
+                <option className='text-white 2xl:text-2xl w-full' value="" disabled>Select a saved account:</option>
                 {contactAccounts.map((account, index) => (
                   <option className='2xl:text-2xl w-full' key={index} value={account}>{account}</option>
                 ))}
@@ -323,7 +328,7 @@ function NewTransactionData() {
 
           {/* Campo para el monto de la transacción */}
           <div className="w-full">
-            <label className="text-gray-700 text-xs sm:text-xs md:text-xs lg:text-sm 2xl:text-2xl block mb-1" htmlFor="amount">Amount $</label>
+            <label className="text-gray-700 text-xs sm:text-xs md:text-xs lg:text-sm 2xl:text-2xl block mb-1" htmlFor="amount">Amount:</label>
             <input
               className={`w-full p-1 bg-blue-700 text-white text-xs sm:text-xs md:text-xs lg:text-sm 2xl:text-2xl rounded ${amountError ? 'border-red-500' : ''}`}
               type="text"
@@ -342,7 +347,7 @@ function NewTransactionData() {
               </p>
             )}
           </div>
-          
+
           {/* Botón de envío */}
           <button
             type="submit"

@@ -38,7 +38,17 @@ export const requestNewLoanAction = createAsyncThunk(
             Authorization: `Bearer ${token}`
           }
         });
-  
+        // const response = await axios.post(" https://localhost:8080/api/loans/apply", {
+        //   loanName,  // Enviar como loanName
+        //   amount,
+        //   payments,
+        //   destinationAccountNumber,  // Enviar como destinationAccountNumber
+        // }, {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`
+        //   }
+        // });
+       
         return response.data; // Devuelve los datos del préstamo creado
       } catch (error) {
         // Si el backend regresa un error, se captura aquí

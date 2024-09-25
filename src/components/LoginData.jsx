@@ -68,7 +68,7 @@ function LoginData() {
 
     try {
       const res = await axios.post("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/auth/login", user);
-
+      //const res = await axios.post("https://localhost:8080/api/auth/login", user);
       // Guardar el token en localStorage
       if (res.data) {
         localStorage.setItem("token", res.data);

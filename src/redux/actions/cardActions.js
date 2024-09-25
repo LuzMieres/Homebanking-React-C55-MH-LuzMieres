@@ -44,7 +44,15 @@ export const requestNewCardAction = createAsyncThunk(
           Authorization: `Bearer ${token}`
         }
       });
-
+    // try {
+    //   const response = await axios.post("https://localhost:8080/api/cards/clients/current/cards", {
+    //     type: type,
+    //     color: color,
+    //   }, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`
+    //     }
+    //   });
       return response.data; // Devuelve los datos de la nueva tarjeta creada
     } catch (error) {
       return rejectWithValue(
