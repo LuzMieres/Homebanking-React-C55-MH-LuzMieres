@@ -110,13 +110,42 @@ function LoginData() {
       return;
     }
 
-    try {
-      await dispatch(changePasswordAction({ currentPassword, newPassword })).unwrap();
-      alertSuccess("Password changed successfully.");
-      setShowChangePasswordForm(false); // Ocultar el formulario de cambio de contraseña
-    } catch (err) {
-      alertError(err);
-    }
+    // Mostrar un mensaje de confirmación antes de cambiar la contraseña
+    Swal.fire({
+      title: 'Change Password',
+      text: 'Are you sure you want to change your password?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, change it!',
+      cancelButtonText: 'No, cancel'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // Intentar cambiar la contraseña
+          await dispatch(changePasswordAction({ currentPassword, newPassword })).unwrap();
+          
+          // Mostrar mensaje de éxito
+          Swal.fire({
+            title: 'Password Changed',
+            text: 'Your password has been changed successfully.',
+            icon: 'success'
+          });
+          
+          // Limpiar campos y cerrar el formulario de cambio de contraseña
+          setCurrentPassword("");
+          setNewPassword("");
+          setShowChangePasswordForm(false);
+
+        } catch (err) {
+          // Mostrar mensaje de error si ocurre un problema
+          Swal.fire({
+            title: 'Error',
+            text: err || 'There was a problem changing your password.',
+            icon: 'error'
+          });
+        }
+      }
+    });
   };
 
   // Verificar si el formulario de login es válido
