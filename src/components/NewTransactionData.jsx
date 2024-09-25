@@ -137,7 +137,7 @@ function NewTransactionData() {
         <p>Type: <strong>${formData.accountType}</strong></p>
         <p>Source Account: <strong>${formData.sourceAccount}</strong></p>
         <p>Destination Account: <strong>${formData.destinationAccount}</strong></p>
-        <p>Amount: <strong>$${parseFloat(formData.amount).toFixed(2)}</strong></p>
+        <p>Amount: <strong>${formatAmountToARS(parseFloat(formData.amount))}</strong></p>
       `,
       icon: 'warning',
       showCancelButton: true,
@@ -157,11 +157,6 @@ function NewTransactionData() {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         })
-        // axios.post("https://localhost:8080/api/transactions/", newTransaction, {
-        //   headers: {
-        //     'Authorization': `Bearer ${localStorage.getItem('token')}`
-        //   }
-        // })
           .then(response => {
             // Mostrar mensaje de éxito
             Swal.fire({
@@ -214,6 +209,14 @@ function NewTransactionData() {
     return <div className="text-center text-gray-600">Loading...</div>;
   }
 
+  // Función para formatear el monto a la moneda local (ARS)
+  function formatAmountToARS(amount) {
+    if (typeof amount !== 'number' || isNaN(amount)) {
+      return 'N/A';
+    }
+    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
+  }
+
   const isFormValid = formData.sourceAccount && formData.destinationAccount && formData.amount && !amountError && !amountInvalid;
 
   return (
@@ -261,7 +264,7 @@ function NewTransactionData() {
 
           {/* Campo de cuenta de origen */}
           <div className="w-full">
-            <label className="text-gray-700 text-xs sm:text-sm lg:text-sm 2xl:text-2xl block mb-1" htmlFor="sourceAccount">Select source account</label>
+            <label className="text-gray-700 text-xs sm:text-sm lg:text-sm 2xl:text-2xl block mb-1" htmlFor="sourceAccount">Select source account:</label>
             <select
               className="select w-full p-1 bg-blue-700 text-white text-xs sm:text-xs md:text-xs lg:text-sm 2xl:text-2xl rounded"
               id="sourceAccount"
@@ -279,7 +282,7 @@ function NewTransactionData() {
           {/* Campo de cuenta de destino */}
           <div className="w-full">
             <p className="text-red-500 text-xs sm:text-sm md:text-xs lg:text-sm mt-1">{serverError}</p>
-            <label className="text-gray-700 text-xs sm:text-xs md:text-xs lg:text-sm 2xl:text-2xl block mb-1" htmlFor="destinationAccount">Destination account</label>
+            <label className="text-gray-700 text-xs sm:text-xs md:text-xs lg:text-sm 2xl:text-2xl block mb-1" htmlFor="destinationAccount">Destination account:</label>
             {formData.accountType === 'Own' ? (
               <select
                 className="select w-full p-1 bg-blue-700 text-white text-xs sm:text-xs md:text-xs lg:text-sm 2xl:text-2xl rounded"
@@ -343,7 +346,7 @@ function NewTransactionData() {
             )}
             {selectedAccount && (
               <p className={`text-xs sm:text-xs md:text-xs lg:text-sm 2xl:text-2xl ${amountError ? 'text-red-500' : 'text-gray-500'} mt-1`}>
-                Available balance: ${selectedAccount.balance.toFixed(2)}
+                Available balance: {formatAmountToARS(selectedAccount.balance)}
               </p>
             )}
           </div>

@@ -51,6 +51,16 @@ function LoginData() {
     setErrors({ email: emailError, password: passwordError });
   }, [email, password]);
 
+  // Cargar datos de login si existen en localStorage
+  useEffect(() => {
+    const loginData = JSON.parse(localStorage.getItem('loginData'));
+    if (loginData) {
+      setEmail(loginData.email);
+      setPassword(loginData.password);
+      localStorage.removeItem('loginData'); // Limpiar los datos después de usarlos
+    }
+  }, []);
+
   // Validación en tiempo real para el formulario de cambio de contraseña
   useEffect(() => {
     const newPasswordError = validatePassword(newPassword);
@@ -68,7 +78,6 @@ function LoginData() {
 
     try {
       const res = await axios.post("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/auth/login", user);
-      //const res = await axios.post("https://localhost:8080/api/auth/login", user);
       // Guardar el token en localStorage
       if (res.data) {
         localStorage.setItem("token", res.data);

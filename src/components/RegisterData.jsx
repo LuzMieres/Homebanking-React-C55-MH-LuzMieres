@@ -93,15 +93,10 @@ function RegisterData() {
       email: formData.email,
       password: formData.password,
     })
-    // axios.post("https://localhost:8080/api/auth/register", {
-    //   firstName: formData.name,
-    //   lastName: formData.lastName, // Cambio de lastName para asegurar que se pase correctamente
-    //   email: formData.email,
-    //   password: formData.password,
-    // })
-    
       .then(response => {
         registerArray.push(response.data.account);
+        // Guardar los datos de inicio de sesión en localStorage para que LoginData los utilice
+        localStorage.setItem('loginData', JSON.stringify({ email: formData.email, password: formData.password }));
         Swal.fire({
           icon: 'success',
           title: 'Account Created Successfully',

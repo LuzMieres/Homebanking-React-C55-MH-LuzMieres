@@ -107,7 +107,7 @@ function LoansData() {
   return (
     <main className="flex flex-col w-full justify-center items-center gap-5 p-4 min-h-screen">
       {/* Instrucción para seleccionar un préstamo */}
-      <div className="text-center text-gray-700">
+      <div className="text-center text-gray-700 absolute top-[20px]">
         Please select a loan to view details.
       </div>
 

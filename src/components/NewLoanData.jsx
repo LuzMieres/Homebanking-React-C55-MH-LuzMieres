@@ -85,7 +85,7 @@ function NewLoanData() {
   }
 
   function handleAmountChange(event) {
-    const enteredAmount = parseFloat(event.target.value);
+    const enteredAmount = parseFloat(event.target.value.replace(/[^0-9.]/g, ''));
     setFormData(prevState => ({
       ...prevState,
       amount: event.target.value,
@@ -156,6 +156,14 @@ function NewLoanData() {
     return <div className="text-center text-gray-600">Loading...</div>;
   }
 
+  // Función para formatear el monto a la moneda local (ARS)
+  function formatAmountToARS(amount) {
+    if (typeof amount !== 'number' || isNaN(amount)) {
+      return 'N/A';
+    }
+    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full p-4">
       <div className="flex flex-col md:flex-row items-center justify-center w-[90%] bg-white p-2 rounded-lg shadow-2xl gap-4 absolute bottom-[-360px] md:bottom-[56px] md:top-[120px] lg:top-[130px] lg:h-[65vh] xl:h-[70vh] xl:top-[160px] 2xl:top-[250px]">
@@ -177,10 +185,10 @@ function NewLoanData() {
             </select>
           </div>
           <div className="w-full">
-            <label className="text-gray-700 text-xs sm:text-sm lg:text-sm md:text-xs lg:text-sm block mb-1" htmlFor="amount">Amount $</label>
+            <label className="text-gray-700 text-xs sm:text-sm lg:text-sm md:text-xs lg:text-sm block mb-1" htmlFor="amount">Amount</label>
             <input
               className={`w-full p-1 bg-blue-700 text-white text-xs sm:text-sm md:text-xs lg:text-sm rounded ${amountError ? 'border-red-500' : ''}`}
-              type="number"
+              type="text"
               id="amount"
               name="amount"
               value={formData.amount}
@@ -188,7 +196,7 @@ function NewLoanData() {
             />
             {selectedLoan && (
               <p className={`text-sm ${amountError ? 'text-red-500' : 'text-gray-500'} mt-1`}>
-                Max amount: ${selectedLoan.maxAmount}
+                Max amount: {formatAmountToARS(selectedLoan.maxAmount)}
               </p>
             )}
           </div>
