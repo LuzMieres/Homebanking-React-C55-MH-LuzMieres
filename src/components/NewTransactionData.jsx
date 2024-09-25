@@ -32,7 +32,7 @@ function NewTransactionData() {
 
   // Obtener datos del cliente
   function obtenerClient() {
-    axios.get("http://localhost:8080/api/auth/current", {
+    axios.get("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/auth/current", {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
@@ -152,7 +152,7 @@ function NewTransactionData() {
           amount: parseFloat(formData.amount),
         };
   
-        axios.post("http://localhost:8080/api/transactions/", newTransaction, {
+        axios.post("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/transactions/", newTransaction, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }

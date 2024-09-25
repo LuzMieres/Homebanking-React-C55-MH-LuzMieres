@@ -87,7 +87,7 @@ function RegisterData() {
     event.preventDefault();
     if (!validateForm()) return;
 
-    axios.post("http://localhost:8080/api/auth/register", {
+    axios.post("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/auth/register", {
       firstName: formData.name,
       lastName: formData.lastName, // Cambio de lastName para asegurar que se pase correctamente
       email: formData.email,
