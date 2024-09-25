@@ -190,15 +190,21 @@ function NewTransactionData() {
             });
           })
           .catch(error => {
-            if (error.response?.data === "Destination account does not exist") {
-              setDestinationAccountError("The destination account does not exist.");
+            if (error.response) {
+              // Verificar el mensaje de error exacto
+              if (error.response.data === "Destination account does not exist") {
+                setDestinationAccountError("The destination account does not exist.");
+              } else {
+                setServerError(error.response.data || "There was a problem with the transaction.");
+              }
             } else {
-              setServerError(error.response?.data || "There was a problem with the transaction.");
+              setServerError("There was a problem with the transaction.");
             }
           });
       }
     });
   }
+  
   
 
   if (!client) {

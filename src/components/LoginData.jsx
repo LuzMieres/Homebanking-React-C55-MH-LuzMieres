@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction';
+import { changePasswordAction } from '../redux/actions/passwordActions'; // Importa la nueva acción
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -11,6 +12,10 @@ function LoginData() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({}); 
   const [showPassword, setShowPassword] = useState(false); 
+  const [showChangePasswordForm, setShowChangePasswordForm] = useState(false); // Estado para mostrar el formulario de cambio de contraseña
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,12 +36,26 @@ function LoginData() {
     });
   };
 
-  // Validación en tiempo real
+  const alertSuccess = (msg) => {
+    Swal.fire({
+      title: "Success",
+      text: msg,
+      icon: "success",
+    });
+  };
+
+  // Validación en tiempo real para el formulario de login
   useEffect(() => {
     const emailError = email === "" ? "Email is required." : null;
     const passwordError = validatePassword(password);
     setErrors({ email: emailError, password: passwordError });
   }, [email, password]);
+
+  // Validación en tiempo real para el formulario de cambio de contraseña
+  useEffect(() => {
+    const newPasswordError = validatePassword(newPassword);
+    setErrors((prevErrors) => ({ ...prevErrors, newPassword: newPasswordError }));
+  }, [newPassword]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -82,8 +101,29 @@ function LoginData() {
     }
   };
 
-  // Verificar si el formulario es válido
+  // Manejar el cambio de contraseña
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+
+    if (errors.newPassword) {
+      alertError("Please fix the errors before submitting.");
+      return;
+    }
+
+    try {
+      await dispatch(changePasswordAction({ currentPassword, newPassword })).unwrap();
+      alertSuccess("Password changed successfully.");
+      setShowChangePasswordForm(false); // Ocultar el formulario de cambio de contraseña
+    } catch (err) {
+      alertError(err);
+    }
+  };
+
+  // Verificar si el formulario de login es válido
   const isFormValid = email && password && !errors.email && !errors.password;
+
+  // Verificar si el formulario de cambio de contraseña es válido
+  const isPasswordChangeFormValid = currentPassword && newPassword && !errors.newPassword;
 
   return (
     <div className='flex flex-col sm:flex-row justify-center items-center w-full min-h-screen'>
@@ -146,7 +186,57 @@ function LoginData() {
           </button>
           <p className='text-gray-700 text-lg sm:text-xl'>O</p>
           <Link className='text-lg sm:text-[25px] text-blue-800 hover:text-blue-600' to="/register">Register</Link>
+          {/* Botón para mostrar el formulario de cambio de contraseña */}
+          <button
+            type="button"
+            onClick={() => setShowChangePasswordForm(!showChangePasswordForm)}
+            className="text-lg sm:text-[20px] text-blue-800 hover:text-blue-600"
+          >
+            Change Password
+          </button>
         </div>
+        {/* Formulario de cambio de contraseña */}
+        {showChangePasswordForm && (
+          <form onSubmit={handleChangePassword} className="w-full p-4 mt-4 bg-gray-100 rounded">
+            <div className='mb-4'>
+              <label htmlFor="currentPassword">
+                <p className='text-gray-700 text-lg sm:text-2xl'>Current Password</p>
+                <input
+                  className={`w-full bg-gray-200 text-black text-lg sm:text-2xl p-2 rounded`}
+                  type="password"
+                  name="currentPassword"
+                  id="currentPassword"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                />
+              </label>
+            </div>
+            <div className='mb-4'>
+              <label htmlFor="newPassword">
+                <p className='text-gray-700 text-lg sm:text-2xl'>New Password</p>
+                <input
+                  className={`w-full bg-gray-200 text-black text-lg sm:text-2xl p-2 rounded ${errors.newPassword ? 'border border-red-500' : ''}`}
+                  type="password"
+                  name="newPassword"
+                  id="newPassword"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </label>
+              <p className="text-sm text-gray-600">
+                Password must be at least 8 characters long, include an uppercase letter, a number, and a special character.
+              </p>
+              {errors.newPassword && <p className="text-red-500 text-sm">{errors.newPassword}</p>}
+            </div>
+            <button
+              type="submit"
+              className={`w-full p-2 rounded text-white ${isPasswordChangeFormValid ? 'bg-green-800 hover:bg-green-600' : 'bg-gray-400 cursor-not-allowed'}`}
+              disabled={!isPasswordChangeFormValid}
+            >
+              Change Password
+            </button>
+          </form>
+        )}
       </form>
     </div>
   );

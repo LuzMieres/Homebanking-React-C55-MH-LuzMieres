@@ -158,7 +158,7 @@ function NewLoanData() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full p-4">
-      <div className="flex flex-col md:flex-row items-center justify-center w-[90%] bg-white p-4 rounded-lg shadow-2xl gap-4 absolute bottom-[90px] md:bottom-[56px] md:top-[120px] lg:top-[130px] lg:h-[65vh]">
+      <div className="flex flex-col md:flex-row items-center justify-center w-[90%] bg-white p-2 rounded-lg shadow-2xl gap-4 absolute bottom-[-360px] md:bottom-[56px] md:top-[120px] lg:top-[130px] lg:h-[65vh] xl:h-[70vh] xl:top-[160px] 2xl:top-[250px]">
         <img className="w-full md:w-1/2 h-auto object-cover mb-4 md:mb-0 lg:h-[60vh]" src="newLoan.png" alt="newLoan" />
         <form onSubmit={handleSubmit} className="flex flex-col items-center w-full md:w-1/2 gap-2 lg:h-[60vh] pt-5">
           <div className="w-full">
