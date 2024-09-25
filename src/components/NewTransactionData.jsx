@@ -337,7 +337,7 @@ function NewTransactionData() {
               type="text"
               id="amount"
               name="amount"
-              value={formData.amount}
+              value={formatAmountToARS(formData.amount)}
               onChange={handleAmountChange}
               disabled={!selectedAccount}
             />

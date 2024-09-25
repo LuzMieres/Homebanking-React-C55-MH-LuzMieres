@@ -217,7 +217,6 @@ main {
     top: 0; /* Sin desplazamiento */
     width: auto;
     height: auto;
-    background-color: transparent; /* Sin fondo */
     transition: none; /* Sin transición */
     box-shadow: none; /* Sin sombra */
   }
