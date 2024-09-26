@@ -11,33 +11,6 @@ const CardCarousel = ({ cards, selectedCardType, handleCardTypeChange }) => {
 
   return (
     <div className="bg-gray-300 rounded-xl flex flex-col justify-center items-center p-[20px] w-full md:w-[90%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%] mx-auto my-4">
-      
-      {/* Contenedor para los radios de selección del tipo de tarjeta */}
-      <div className="flex items-center justify-center mb-4">
-        <label className="flex items-center gap-2 mx-2 text-sm lg:text-lg 2xl:text-xl">
-          <input
-            type="radio"
-            name="cardType"
-            value="CREDIT"
-            checked={selectedCardType === "CREDIT"}
-            onChange={handleCardTypeChange}
-            className="form-radio text-blue-600"
-          />
-          CREDIT
-        </label>
-        <label className="flex items-center gap-2 mx-2 text-sm lg:text-lg 2xl:text-xl">
-          <input
-            type="radio"
-            name="cardType"
-            value="DEBIT"
-            checked={selectedCardType === "DEBIT"}
-            onChange={handleCardTypeChange}
-            className="form-radio text-blue-600"
-          />
-          DEBIT
-        </label>
-      </div>
-
       {/* Contenedor principal para centrar la tarjeta */}
       <div className="w-full lg:h-[400px] flex justify-center items-center overflow-hidden">
         <div

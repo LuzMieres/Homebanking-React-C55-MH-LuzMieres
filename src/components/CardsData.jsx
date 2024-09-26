@@ -74,7 +74,32 @@ function CardsData() {
 
   return (
     <main className="contenedorPrincipalCards flex flex-col w-full justify-center items-center min-h-screen overflow-hidden mt-20px">
-      
+      {/* Inputs para seleccionar el tipo de tarjeta */}
+      <div className="flex items-center justify-center mb-4">
+        <label className="flex items-center gap-2 mx-2 text-sm lg:text-lg 2xl:text-xl">
+          <input
+            type="radio"
+            name="cardType"
+            value="CREDIT"
+            checked={selectedCardType === "CREDIT"}
+            onChange={handleCardTypeChange}
+            className="form-radio text-blue-600"
+          />
+          CREDIT
+        </label>
+        <label className="flex items-center gap-2 mx-2 text-sm lg:text-lg 2xl:text-xl">
+          <input
+            type="radio"
+            name="cardType"
+            value="DEBIT"
+            checked={selectedCardType === "DEBIT"}
+            onChange={handleCardTypeChange}
+            className="form-radio text-blue-600"
+          />
+          DEBIT
+        </label>
+      </div>
+
       {/* Mostrar el carrusel solo si hay tarjetas */}
       {filteredCards.length > 0 ? (
         <CardCarousel cards={filteredCards} selectedCardType={selectedCardType} handleCardTypeChange={handleCardTypeChange} />
@@ -86,7 +111,7 @@ function CardsData() {
       <div className="flex flex-col items-center mt-8">
         <button
           onClick={handleRequestNewCard}
-          className={`2xl:text-xl p-3 rounded text-white ${
+          className={`2xl:text-3xl p-3 rounded text-white ${
             isMaxCardsReached ? "bg-gray-400 cursor-not-allowed" : "bg-blue-800 text-white hover:bg-blue-600"
           }`}
           disabled={isMaxCardsReached} // Deshabilitar si ya alcanzó el límite de tarjetas

@@ -109,7 +109,7 @@ function NewCardData() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full p-4">
-      <div className="flex flex-col md:flex-row items-center justify-center w-[90%] bg-white p-4 rounded-lg shadow-2xl gap-4 absolute bottom-[-170px] md:bottom-[70px] lg:bottom-[-20px]">
+      <div className="flex flex-col md:flex-row items-center justify-center w-[90%] bg-white p-4 rounded-lg shadow-2xl gap-4">
         <img 
           className="w-full sm:w-1/2 h-auto object-cover mb-4 sm:mb-0 rounded-md" 
           src="newCard.png" 
