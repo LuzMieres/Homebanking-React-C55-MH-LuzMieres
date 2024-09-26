@@ -1,16 +1,15 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction';
+import { loadCurrentUserAction, loadClientLoans } from '../redux/actions/loanActions';
 import '../styles/style.css';
-import { LoanContext } from '../context/LoanContext';
 
 function LoansData() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { client, status, error } = useSelector((state) => state.currentUser);
-  const { selectedAccount } = useContext(LoanContext);
+  const { loans } = useSelector((state) => state.clientLoans); // Selecciona la lista de préstamos del estado
 
   useEffect(() => {
     if (status === 'idle') {
@@ -20,9 +19,9 @@ function LoansData() {
 
   useEffect(() => {
     if (client) {
-      console.log("Client loans:", client.loans);
+      dispatch(loadClientLoans()); // Carga los préstamos del cliente
     }
-  }, [client]);
+  }, [dispatch, client]);
 
   if (status === 'loading') {
     return <div className="text-center text-gray-600">Loading...</div>;
@@ -39,30 +38,17 @@ function LoansData() {
     return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
   }
 
-  // Calcula el total con intereses si no está presente
-  function calculateTotalWithInterest(loan) {
-    if (loan.totalAmount) {
-      return loan.totalAmount; // Si ya está presente, no hacer nada
-    }
-    const interestRate = loan.interestRate || 20; // Supongamos un interés del 20% si no está presente
-    const totalWithInterest = loan.amount + (loan.amount * interestRate / 100);
-    return totalWithInterest;
-  }
-
   function handleRowClick(loan) {
-    // Obtener el total con intereses directamente desde el objeto `loan` si ya viene calculado desde el backend
-    const totalAmount = formatAmountToARS(calculateTotalWithInterest(loan));
-
     Swal.fire({
       title: 'Loan Details',
       html: `
         <div style="text-align: left;">
           <p><strong>Loan Type:</strong> ${loan.loanType || loan.name}</p>
           <p><strong>Requested Amount:</strong> ${formatAmountToARS(loan.amount)}</p>
-          <p><strong>Credited Amount:</strong> ${formatAmountToARS(loan.amount)}</p>
-          <p><strong>Total with Interest:</strong> ${totalAmount}</p>
+          <p><strong>Credited Amount:</strong> ${formatAmountToARS(loan.creditedAmount)}</p>
+          <p><strong>Total with Interest:</strong> ${formatAmountToARS(loan.totalAmount)}</p>
           <p><strong>Payments:</strong> ${loan.payments}</p>
-          <p><strong>Deposit Account:</strong> ${loan.depositAccount || selectedAccount || 'N/A'}</p>
+          <p><strong>Deposit Account:</strong> ${loan.depositAccount || 'N/A'}</p>
         </div>
       `,
       icon: 'info',
@@ -80,7 +66,7 @@ function LoansData() {
         Please select a loan to view details.
       </div>
 
-      {client && client.loans && client.loans.length > 0 ? (
+      {loans && loans.length > 0 ? (
         <div className="loans-table-container">
           <table className="loans-table">
             <thead>
@@ -94,7 +80,7 @@ function LoansData() {
               </tr>
             </thead>
             <tbody>
-              {client.loans.map((loan, index) => (
+              {loans.map((loan, index) => (
                 <tr 
                   key={index} 
                   className="loans-table-row"
@@ -102,10 +88,10 @@ function LoansData() {
                 >
                   <td className="loans-table-cell">{loan.loanType || loan.name}</td>
                   <td className="loans-table-cell">{formatAmountToARS(loan.amount)}</td>
-                  <td className="loans-table-cell">{formatAmountToARS(loan.amount)}</td>
-                  <td className="loans-table-cell">{formatAmountToARS(calculateTotalWithInterest(loan))}</td> {/* Calculamos el total con intereses */}
+                  <td className="loans-table-cell">{formatAmountToARS(loan.creditedAmount)}</td>
+                  <td className="loans-table-cell">{formatAmountToARS(loan.totalAmount)}</td>
                   <td className="loans-table-cell">{loan.payments}</td>
-                  <td className="loans-table-cell">{loan.depositAccount || 'N/A'}</td> {/* Mostrar la cuenta de depósito */}
+                  <td className="loans-table-cell">{loan.depositAccount || 'N/A'}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,5 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { requestNewLoanAction } from '../actions/loanActions';
+import { requestNewLoanAction, loadClientLoans } from '../actions/loanActions';
+import { loadCurrentUserAction } from '../actions/clientActions';
 
 const initialState = {
   loans: [], // Lista de préstamos del cliente
@@ -15,11 +16,26 @@ const loanReducer = createReducer(initialState, (builder) => {
     .addCase(requestNewLoanAction.fulfilled, (state, action) => {
       console.log("Nuevo préstamo creado:", action.payload);
       state.loans.push(action.payload); // Agrega el nuevo préstamo a la lista de préstamos
-      state.status = "success";
+      state.status = "succeeded"; // Cambié "success" por "succeeded" para mantener consistencia
     })
     .addCase(requestNewLoanAction.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.payload; // Maneja los errores
+    })
+    .addCase(loadClientLoans.pending, (state) => {
+      state.status = "loading";
+    })
+    .addCase(loadClientLoans.fulfilled, (state, action) => {
+      state.loans = action.payload; // Actualiza la lista de préstamos del cliente
+      state.status = "succeeded";
+    })
+    .addCase(loadClientLoans.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload;
+    })
+    .addCase(loadCurrentUserAction.fulfilled, (state, action) => {
+      // Cuando se carga el cliente, actualiza la lista de préstamos
+      state.loans = action.payload.loans;
     });
 });
 
