@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { requestNewLoanAction, loadClientLoans } from '../actions/loanActions';
-import { loadCurrentUserAction } from '../actions/clientActions';
+import { loadCurrentUserAction } from '../actions/loadCurrentUserAction';
 
 const initialState = {
   loans: [], // Lista de préstamos del cliente
