@@ -444,6 +444,10 @@ main {
   font-weight: bold;
 }
 
+.account-creation-date{
+  color: black;
+}
+
 @media (min-width: 640px) {
   .accounts-carousel-container {
     max-width: 90%;

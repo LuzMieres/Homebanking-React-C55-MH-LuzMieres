@@ -98,15 +98,14 @@ function NewLoanData() {
   function handleAmountChange(event) {
     let enteredAmount = event.target.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
     setRawAmount(enteredAmount); // Guardar el valor sin formato
-
-    enteredAmount = enteredAmount ? parseFloat(enteredAmount) : ''; // Convertir a número si no está vacío
-    const formattedAmount = enteredAmount ? formatAmountToARS(enteredAmount) : ''; // Formatear solo si hay valor
     setFormData(prevState => ({
       ...prevState,
-      amount: formattedAmount,
+      amount: enteredAmount, // Guardar sin formatear
     }));
 
-    if (selectedLoan && enteredAmount > selectedLoan.maxAmount) {
+    const numericAmount = enteredAmount ? parseFloat(enteredAmount) : 0;
+
+    if (selectedLoan && numericAmount > selectedLoan.maxAmount) {
       setAmountError(true);
     } else {
       setAmountError(false);
@@ -186,7 +185,7 @@ function NewLoanData() {
           Swal.fire({
             icon: 'success',
             title: 'Loan Requested',
-            text: 'Your loan request has been successfully submitted.',
+            text: `Your loan request has been successfully submitted for an amount of ${formatAmountToARS(rawAmountValue)}.`,
             timer: 1500,
             showConfirmButton: false,
           });
