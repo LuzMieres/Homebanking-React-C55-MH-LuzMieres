@@ -10,7 +10,7 @@ const AccountsCarousel = ({ accounts, onAccountClick }) => {
   };
 
   return (
-    <div className="bg-gray-300 rounded-xl absolute top-[190px] xl:top-[260px] 2xl:top-[400px] flex flex-col justify-center items-center p-[20px] w-full md:w-[90%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%] mx-auto my-4">
+    <div className="bg-gray-300 rounded-xl absolute top-[10px] xl:top-[260px] 2xl:top-[400px] flex flex-col justify-center items-center p-[20px] w-full md:w-[90%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%] mx-auto my-4">
       {/* Contenedor principal para centrar la cuenta */}
       <div className="w-full lg:h-[200px] flex justify-center items-center overflow-hidden">
         <div
