@@ -7,12 +7,12 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif; /* Fuente base */
+  font-family: 'Arial', sans-serif;
   box-sizing: border-box;
 }
 
 *, *::before, *::after {
-  box-sizing: inherit; /* Consistencia en el box-sizing */
+  box-sizing: inherit;
 }
 
 .flex {
@@ -53,7 +53,7 @@ html, body, #root {
   padding: 0.75rem; /* pl-3 pr-3 */
   border: none;
   cursor: pointer;
-  display: block; /* Solo mostrar en pantallas pequeñas */
+  display: block; /* Mostrar en pantallas pequeñas */
 }
 
 .header-title {
@@ -69,7 +69,7 @@ html, body, #root {
 
 /* === Estilos de Navegación === */
 .nav {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -86,7 +86,7 @@ html, body, #root {
   top: 15vh; /* Mostrar menú en móviles */
 }
 
-.navLinks {
+.nav-links {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -95,27 +95,23 @@ html, body, #root {
   align-items: center;
 }
 
-.navLinks li {
+.nav-links li {
   margin: 1rem 0;
 }
 
-.navLinks a {
+.nav-link, .active-link {
   color: #ffffff;
   text-decoration: none;
   font-size: 1.5rem;
   transition: color 0.3s ease;
 }
 
-.navLinks a:hover {
+.nav-link:hover, .active-link {
   color: #00b2ff; /* Azul claro */
 }
 
 /* Estilos para pantallas medianas y grandes */
 @media (min-width: 768px) {
-  .header {
-    justify-content: space-between;
-  }
-
   .menu-button {
     display: none; /* Ocultar en pantallas md y mayores */
   }
@@ -129,7 +125,7 @@ html, body, #root {
     box-shadow: none;
   }
 
-  .navLinks {
+  .nav-links {
     flex-direction: row;
     gap: 20px;
   }
@@ -150,6 +146,13 @@ html, body, #root {
   box-sizing: border-box;
 }
 
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
 footer p,
 footer a {
   margin: 0.5rem 0;
@@ -165,6 +168,14 @@ footer img {
   height: 30px;
   margin: 0.5rem;
   filter: brightness(0) invert(1); /* Convertir los logos a blanco */
+}
+
+@media (min-width: 640px) {
+  .footer-content {
+    flex-direction: row; /* Cambiar a fila en pantallas más grandes */
+    align-items: center;
+    justify-content: space-around;
+  }
 }
 
 @media (min-width: 768px) {
@@ -421,7 +432,7 @@ main {
 .account-card p {
   margin: 10px 0;
   font-size: 16px;
-  color: #1f2937; /* Gris oscuro */
+  color: #ffffff; /* Blanco */
 }
 
 .account-card p.account-number {
@@ -431,7 +442,6 @@ main {
 .account-card p.account-balance {
   font-size: 18px;
   font-weight: bold;
-  color: #059669; /* Verde */
 }
 
 @media (min-width: 640px) {
@@ -481,6 +491,34 @@ main {
 
   .account-card {
     max-width: 600px;
+  }
+}
+
+/* === Botones del Carrusel de Cuentas === */
+.prev-button,
+.next-button {
+  background-color: #1d4ed8; /* Color azul */
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.prev-button:disabled,
+.next-button:disabled {
+  opacity: 0.5; /* Opacidad reducida para los botones deshabilitados */
+  cursor: not-allowed; /* Cursor de no permitido */
+}
+
+@media (max-width: 767px) {
+  .prev-button,
+  .next-button {
+    position: absolute;
+    bottom: 10px; /* Colocar debajo del carrusel */
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
