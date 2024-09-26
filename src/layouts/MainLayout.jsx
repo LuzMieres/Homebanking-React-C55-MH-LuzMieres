@@ -15,7 +15,7 @@ function MainLayout() {
       </main>
 
       {/* Footer pegajoso al final de la página */}
-      <Footer className='absolute bottom-0'/>
+      <Footer className='absolute top-[100vh]'/>
     </div>
   );
 }
