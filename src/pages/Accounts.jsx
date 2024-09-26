@@ -24,7 +24,7 @@ function Accounts() {
           {client ? `👋 Welcome, ${client.firstName} ${client.lastName}!` : ''}
         </h2>
       </div>
-      <h3 className="text-xl sm:text-xl md:text-xl text-blue-800 lg:text-3xl xl:text-[40px] 2xl:text-[50px] mb-5">Your Accounts</h3>
+      <h3 className="text-xl sm:text-xl md:text-xl text-blue-800 lg:text-3xl xl:text-[40px] 2xl:text-[50px] mb-5 mt-5">Your Accounts</h3>
       <div className="w-full flex flex-col items-center gap-6 xl:justify-between xl:min-h-[70vh]">
         <AccountsData />
       </div>

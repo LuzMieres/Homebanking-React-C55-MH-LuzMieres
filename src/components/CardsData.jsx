@@ -86,7 +86,7 @@ function CardsData() {
       <div className="flex flex-col items-center mt-8">
         <button
           onClick={handleRequestNewCard}
-          className={`absolute bottom-[-310px] md:bottom-[-130px] lg:bottom-[-320px] xl:bottom-[-130px] 2xl:bottom-[420px] 2xl:text-3xl p-3 rounded text-white ${
+          className={`2xl:text-xl p-3 rounded text-white ${
             isMaxCardsReached ? "bg-gray-400 cursor-not-allowed" : "bg-blue-800 text-white hover:bg-blue-600"
           }`}
           disabled={isMaxCardsReached} // Deshabilitar si ya alcanzó el límite de tarjetas
@@ -96,7 +96,7 @@ function CardsData() {
         
         {/* Mostrar mensaje de error si el cliente ya tiene el máximo de tarjetas del tipo seleccionado */}
         {isMaxCardsReached && (
-          <p className="text-red-500 mt-2 absolute bottom-[-340px] md:bottom-[-160px] lg:bottom-[-350px] xl:bottom-[-160px] 2xl:bottom-[350px] 2xl:text-3xl">
+          <p className="text-red-500 mt-2 2xl:text-xl">
             You already have {cardLimitPerType[selectedCardType]} {selectedCardType.toLowerCase()} cards.
           </p>
         )}

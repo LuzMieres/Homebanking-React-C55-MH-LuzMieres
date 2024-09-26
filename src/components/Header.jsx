@@ -43,7 +43,7 @@ function Header() {
     <>
       <header className='header w-full h-[20vh] bg-blue-800 flex justify-between items-center p-4 md:z-1 lg:z-1 xl:z-1 2xl:z-1'>
         <div className='flex justify-center items-center'>
-        <img className='w-[3.5rem] h-[3.5rem] sm:w-12 sm:h-12' src="bank-icon.svg" alt="banking-icon" />
+        <h1 className='text-white text-[50px]'>Big Bank</h1>
         </div>
         {/* Mostrar el botón del menú solo en pantallas pequeñas */}
         <button
@@ -56,7 +56,7 @@ function Header() {
       </header>
       {/* En pantallas grandes (md en adelante), mostrar el nav sin transición y sin el botón */}
       <nav
-        className={`nav ${showNav ? 'show' : ''} bg-blue-800 z-10 lg:static lg:flex lg:flex-row lg:justify-around lg:items-center lg:gap-8 lg:top-0 lg:h-auto lg:shadow-none lg:w-full md:bg-blue-800 lg:bg-blue-800 xl:bg-blue-800 2xl:bg-blue-800`}
+        className={`nav ${showNav ? 'show' : ''} bg-blue-900 z-10 lg:static lg:flex lg:flex-row lg:justify-around lg:items-center lg:gap-8 lg:top-0 lg:h-auto lg:shadow-none lg:w-full`}
       >
         <ul className='navLinks text-white lg:flex lg:gap-8'>
           <li>

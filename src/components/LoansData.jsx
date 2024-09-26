@@ -107,13 +107,13 @@ function LoansData() {
   return (
     <main className="flex flex-col w-full justify-center items-center gap-5 p-4 min-h-screen">
       {/* Instrucción para seleccionar un préstamo */}
-      <div className="text-center text-gray-700 absolute top-[120px]">
+      <div className="text-center text-gray-700">
         Please select a loan to view details.
       </div>
 
       {client && client.loans && client.loans.length > 0 ? (
         <div className="overflow-x-auto flex flex-col justify-center items-center w-[100%] max-w-4xl 2xl:max-w-[70%]">
-          <table className="w-[90%] md:w-[70%] lg:w-[50%] xl:w-[50%] 2xl:w-[50%] bg-blue-700 text-white rounded-lg shadow-2xl table-auto absolute top-[150px] lg:top-[200px] xl:top-[250px] 2xl:top-[400px]">
+          <table className="w-[90%] md:w-[70%] lg:w-[50%] xl:w-[50%] 2xl:w-[50%] bg-blue-700 text-white rounded-lg shadow-2xl table-auto">
             <thead>
               <tr className="bg-blue-800">
                 <th className="p-2 text-start border border-gray-300 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-3xl">LOAN TYPE</th>

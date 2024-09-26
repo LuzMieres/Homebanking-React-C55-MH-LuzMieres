@@ -212,9 +212,9 @@ function NewTransactionData() {
   // Función para formatear el monto a la moneda local (ARS)
   function formatAmountToARS(amount) {
     if (typeof amount !== 'number' || isNaN(amount)) {
-      return 'N/A';
+      return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
     }
-    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
+    return "";
   }
 
   const isFormValid = formData.sourceAccount && formData.destinationAccount && formData.amount && !amountError && !amountInvalid;
