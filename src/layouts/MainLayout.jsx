@@ -10,7 +10,7 @@ function MainLayout() {
       <Header /> {/* Header estático en la parte superior */}
 
       {/* Contenedor del contenido principal que crece con el contenido */}
-      <main className="flex-grow w-full absolute top-[130px] md:top-[200px] lg:top-[200px] xl:top-[270px]"> 
+      <main className="flex-grow w-full absolute top-[150px] md:top-[200px] lg:top-[200px] xl:top-[270px]"> 
         <Outlet />
       </main>
 
