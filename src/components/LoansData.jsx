@@ -2,14 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { loadCurrentUserAction, loadClientLoans } from '../redux/actions/loanActions';
+import { loadClientLoans } from '../redux/actions/loanActions'; // Corrige la importación
+import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction'; // Corrige la importación
 import '../styles/style.css';
 
 function LoansData() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { client, status, error } = useSelector((state) => state.currentUser);
-  const { loans } = useSelector((state) => state.clientLoans); // Selecciona la lista de préstamos del estado
+  const { client, status, error } = useSelector((state) => state.currentUser); // Asegúrate de que currentUser es correcto en tu store
+  const { loans, status: loansStatus } = useSelector((state) => state.loans); // Asegúrate de que loans está correctamente mapeado en tu store
 
   useEffect(() => {
     if (status === 'idle') {
@@ -18,17 +19,21 @@ function LoansData() {
   }, [dispatch, status]);
 
   useEffect(() => {
-    if (client) {
+    if (client && loansStatus === 'idle') {
       dispatch(loadClientLoans()); // Carga los préstamos del cliente
     }
-  }, [dispatch, client]);
+  }, [dispatch, client, loansStatus]);
 
-  if (status === 'loading') {
+  if (status === 'loading' || loansStatus === 'loading') {
     return <div className="text-center text-gray-600">Loading...</div>;
   }
 
   if (status === 'failed') {
     return <div className="text-center text-red-600">Error: {error}</div>;
+  }
+
+  if (loansStatus === 'failed') {
+    return <div className="text-center text-red-600">Error loading loans: {error}</div>;
   }
 
   function formatAmountToARS(amount) {
