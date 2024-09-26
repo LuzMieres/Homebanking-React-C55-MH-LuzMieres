@@ -323,89 +323,116 @@ main {
   }
 }
 
-/* Estilo general del contenedor del carrusel */
+/* Contenedor principal del carrusel */
 .carousel-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  overflow: hidden; /* Ocultar cualquier contenido que desborde */
+  overflow: hidden;
   position: relative;
 }
 
+/* Contenedor para las tarjetas del carrusel */
 .carousel-cards-container {
+  width: 100%;
   display: flex;
-  overflow: hidden; /* Ocultar las tarjetas fuera de la vista */
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Carrusel de tarjetas, que se desplaza horizontalmente */
+.carousel-cards {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
   width: 100%;
 }
 
-.carousel-cards {
-  display: flex;
-  transition: transform 0.5s ease-in-out; /* Transición suave al cambiar de tarjeta */
-  width: 100%; /* Asegúrate de que el ancho del contenedor se ajuste al número de tarjetas */
-}
-
+/* Cada tarjeta en el carrusel */
 .carousel-card {
-  flex: 0 0 100%; /* Cada tarjeta ocupa el 100% del contenedor para mostrarse una a la vez */
+  width: 360px;
+  height: 220px;
+  flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  backface-visibility: hidden; /* Ocultar dorso cuando se ve el frente */
-  transform-style: preserve-3d; /* Habilitar 3D */
-  transition: transform 0.6s; /* Transición suave de rotación */
+  position: relative;
+  perspective: 1000px; /* Permite la rotación en 3D */
 }
 
+/* Contenedor de las tarjetas frontal y dorsal */
 .card-pair {
-  position: relative;
   width: 100%;
-  height: auto;
-  perspective: 1000px; /* Necesario para rotación 3D */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transform-style: preserve-3d; /* Mantiene el efecto 3D al rotar */
+  transition: transform 0.5s ease-in-out;
 }
 
 /* Estilo adicional para tarjetas volteadas */
 .carousel-card.flipped .card-front {
   transform: rotateY(180deg); /* Rota el frente al voltear */
 }
-
-.carousel-card.flipped .card-back {
-  transform: rotateY(0deg); /* Muestra el dorso */
+.carousel-card.flipped .card-pair {
+  transform: rotateY(180deg);
 }
 
+/* Tarjeta frontal y dorsal compartiendo el mismo contenedor */
 .card {
+  width: 360px;
+  height: 220px;
   position: absolute;
-  width: 100%;
-  height: auto;
-  backface-visibility: hidden; /* Ocultar dorso cuando se ve el frente */
-  border-radius: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  backface-visibility: hidden; /* Oculta el reverso al no estar en vista */
+  border-radius: 15px;
+  overflow: hidden;
 }
 
+/* Ajustes de la tarjeta frontal */
 .card-front {
-  transform: rotateY(0deg); /* Muestra el frente por defecto */
+  z-index: 2;
+  transform: rotateY(0deg);
+  width: 360px;
+  height: 220px;
 }
 
+/* Ajustes de la tarjeta dorsal */
 .card-back {
-  transform: rotateY(180deg); /* Oculta el dorso por defecto */
+  transform: rotateY(180deg);
+  width: 360px;
+  height: 220px;
 }
 
+/* Estilo del botón para cambiar de tarjeta */
 .next-button {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background-color: #1d4ed8; /* bg-blue-800 */
-  color: #ffffff;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 0.5rem;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .next-button:hover {
-  background-color: #2563eb; /* hover:bg-blue-600 */
+  background-color: #2563eb;
 }
 
+.next-button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
 /* Estilo para el contenedor de contenido de la tarjeta */
 .card-content {
   display: flex;
@@ -528,110 +555,110 @@ main {
 @import 'tailwindcss/utilities';
 
 /* Estilo general del contenedor del carrusel */
+/* style.css */
+
+/* Contenedor principal del carrusel de cuentas */
 .accounts-carousel-container {
-  background-color: #e5e7eb; /* bg-gray-300 */
-  border-radius: 0.75rem; /* rounded-xl */
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 20px;
+  justify-content: center;
   width: 100%;
-  max-width: 600px;
-  margin: 2rem auto;
   position: relative;
-  overflow: hidden; /* Para ocultar las partes fuera del contenedor */
+  overflow: hidden; /* Oculta cualquier desbordamiento */
+  padding: 20px 0;
 }
 
-/* Estilo del contenedor de las cuentas del carrusel */
+/* Botones del carrusel */
+.prev-button, .next-button {
+  background-color: #1d4ed8; /* Azul */
+  color: #fff; /* Blanco */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.prev-button {
+  left: 10px; /* Posición izquierda */
+}
+
+.next-button {
+  right: 10px; /* Posición derecha */
+}
+
+.prev-button:hover, .next-button:hover {
+  background-color: #2563eb; /* Azul más claro */
+}
+
+.prev-button:disabled, .next-button:disabled {
+  background-color: #9ca3af; /* Gris */
+  cursor: not-allowed;
+}
+
+/* Contenedor de las cuentas en el carrusel */
 .accounts-carousel {
-  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  width: 100%;
+  overflow: hidden; /* Oculta cualquier desbordamiento horizontal */
 }
 
-/* Contenedor interno para las cuentas */
+/* Carrusel interior que se mueve horizontalmente */
 .accounts-carousel-inner {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.7s ease-in-out;
+  transition: transform 0.5s ease-in-out; /* Transición suave al mover */
   width: 100%;
 }
 
-/* Tarjeta individual de la cuenta */
+/* Cada tarjeta de cuenta en el carrusel */
 .accounts-carousel-card {
-  min-width: 100%;
+  width: 90%; /* 90% del ancho del contenedor padre */
+  height: 250px; /* Altura fija de 250px */
+  flex-shrink: 0; /* Evita que la tarjeta se reduzca */
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px; /* Para crear un espacio alrededor de cada cuenta */
-  box-sizing: border-box;
   cursor: pointer;
+  margin: 0 10px; /* Margen horizontal entre tarjetas */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  background-color: #fff; /* Fondo blanco */
 }
 
-/* Estilo de la tarjeta de cuenta */
+/* Contenedor de cada tarjeta */
 .account-card {
   width: 100%;
-  max-width: 350px;
-  height: auto;
-  border-radius: 1rem;
-  background-color: #1e3a8a; /* bg-blue-700 */
-  border: 1px solid #1e40af; /* border-blue-800 */
-  padding: 1rem;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #e5e7eb; /* Gris claro */
+  border-radius: 10px;
   text-align: center;
-  color: #ffffff;
-  transition: all 0.3s ease-in-out;
 }
 
-.account-card:hover {
-  background-color: #1d4ed8; /* hover:bg-blue-600 */
-  border-color: #2563eb; /* hover:border-blue-700 */
+.account-card p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #1f2937; /* Gris oscuro */
 }
 
-/* Número de cuenta */
-.account-number {
-  font-size: 1rem;
+.account-card p.account-number {
   font-weight: bold;
 }
 
-/* Balance de cuenta */
-.account-balance {
-  font-size: 1.25rem;
+.account-card p.account-balance {
+  font-size: 18px;
   font-weight: bold;
-}
-
-/* Fecha de creación de la cuenta */
-.account-creation-date {
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-/* Estilo del botón de siguiente cuenta */
-.next-button,
-.prev-button {
-  margin: 0 10px;
-  color: #ffffff; /* text-white */
-  background-color: #1d4ed8; /* bg-blue-800 */
-  padding: 0.75rem;
-  font-size: 1.25rem;
-  border-radius: 0.5rem; /* rounded-lg */
-  transition: transform 0.3s ease-in-out;
-  cursor: pointer;
-  border: none;
-}
-
-.next-button:hover,
-.prev-button:hover {
-  background-color: #2563eb; /* hover:bg-blue-600 */
-  transform: translateY(-2px);
-}
-
-.next-button:disabled,
-.prev-button:disabled {
-  background-color: #9ca3af; /* bg-gray-400 */
-  cursor: not-allowed;
+  color: #059669; /* Verde */
 }
 
 @media (min-width: 640px) {
@@ -1801,3 +1828,176 @@ main {
 }
 
 
+/* style.css */
+
+/* Contenedor principal de los detalles de la cuenta */
+.account-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+}
+
+.account-info-container {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.account-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.account-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1d4ed8;
+  margin-bottom: 10px;
+}
+
+.account-balance {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.balance-label {
+  margin-right: 10px;
+}
+
+.toggle-balance-button {
+  margin-left: 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.transactions-table-container {
+  overflow-x: auto; /* Permite el desplazamiento horizontal */
+}
+
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table-header {
+  background-color: #1d4ed8;
+  color: #ffffff;
+  padding: 10px;
+}
+
+.transaction-row:nth-child(even) {
+  background-color: #f3f4f6;
+}
+
+.transaction-row:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.transaction-data {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.no-transactions {
+  font-size: 16px;
+  color: #6b7280;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.text-red-500 {
+  color: #ef4444; /* Rojo para débitos */
+}
+
+.text-green-500 {
+  color: #10b981; /* Verde para créditos */
+}
+
+/* styles/style.css */
+
+/* Contenedor principal del carrusel */
+.accounts-carousel-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden; /* Evitar desbordamiento */
+}
+
+/* Botones de navegación */
+.prev-button,
+.next-button {
+  background-color: #1d4ed8; /* Color azul */
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.prev-button:disabled,
+.next-button:disabled {
+  opacity: 0.5; /* Opacidad reducida para los botones deshabilitados */
+  cursor: not-allowed; /* Cursor de no permitido */
+}
+
+/* Contenedor del carrusel */
+.accounts-carousel {
+  width: 100%; /* Ajustar al ancho del contenedor padre */
+  max-width: 1000px; /* Máximo ancho */
+  overflow: hidden; /* Evitar desbordamiento */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Carrusel interno */
+.accounts-carousel-inner {
+  display: flex;
+  transition: transform 0.5s ease-in-out; /* Transición suave */
+}
+
+/* Tarjeta de cada cuenta en el carrusel */
+.accounts-carousel-card {
+  min-width: 100%; /* Cada tarjeta ocupa todo el ancho del carrusel */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease-in-out; /* Transición suave */
+}
+
+/* Contenido de la tarjeta de cuenta */
+.account-card {
+  width: 90%; /* Ajustar el ancho de la tarjeta al 90% del contenedor padre */
+  max-width: 400px; /* Máximo ancho */
+  height: 250px; /* Altura de la tarjeta */
+  background-color: #ffffff; /* Fondo blanco */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+  padding: 20px; /* Espaciado interno */
+  text-align: center; /* Texto centrado */
+}
+
+/* Información de la cuenta */
+.account-number,
+.account-balance,
+.account-creation-date {
+  font-size: 16px;
+  color: #374151; /* Color de texto */
+  margin-bottom: 10px;
+}

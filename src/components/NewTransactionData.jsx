@@ -53,6 +53,7 @@ function NewTransactionData() {
     });
     setServerError('');
     setDestinationAccountError('');
+    setDestinationAccountBalance(null); // Reinicia el balance de destino
   }
 
   function handleSourceAccountChange(event) {
@@ -66,6 +67,7 @@ function NewTransactionData() {
         sourceAccount: selectedAccountNumber,
       }));
       setAmountError(false);
+      setAmountInvalid(false);
     }
   }
 
@@ -85,7 +87,6 @@ function NewTransactionData() {
       setDestinationAccountError('');
     }
 
-    // Si es una cuenta propia, obtener el saldo de la cuenta de destino
     if (formData.accountType === 'Own') {
       const destinationAcc = client.accounts.find(a => a.number === destinationAccount);
       setDestinationAccountBalance(destinationAcc ? destinationAcc.balance : null);
@@ -127,7 +128,6 @@ function NewTransactionData() {
     setAmountInvalid(false);
   }
 
-  // Nueva función para aplicar el formato solo al salir del campo
   function handleAmountBlur() {
     const numericValue = parseFloat(formData.amount);
 
@@ -149,7 +149,6 @@ function NewTransactionData() {
   }
 
   function updateAccountBalances(sourceAccountNumber, destinationAccountNumber, amount) {
-    // Actualizar el saldo de la cuenta de origen
     const updatedAccounts = client.accounts.map(account => {
       if (account.number === sourceAccountNumber) {
         return {
@@ -157,7 +156,6 @@ function NewTransactionData() {
           balance: account.balance - amount
         };
       } else if (account.number === destinationAccountNumber) {
-        // Si la cuenta de destino es propia, actualizar también su saldo
         return {
           ...account,
           balance: account.balance + amount
@@ -171,7 +169,6 @@ function NewTransactionData() {
       accounts: updatedAccounts
     }));
 
-    // Actualizar el saldo de la cuenta de destino si es propia
     if (formData.accountType === 'Own') {
       const destinationAccount = updatedAccounts.find(account => account.number === destinationAccountNumber);
       setDestinationAccountBalance(destinationAccount.balance);
@@ -182,18 +179,30 @@ function NewTransactionData() {
     event.preventDefault();
 
     const numericAmount = parseFloat(formData.amount.replace(/[^0-9.-]+/g, ''));
-    if (!formData.sourceAccount || !formData.destinationAccount || !numericAmount) {
-      alert("Please fill in all required fields.");
+    if (!formData.sourceAccount || !formData.destinationAccount || isNaN(numericAmount)) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Incomplete Form',
+        text: 'Please fill in all required fields with valid information.',
+      });
       return;
     }
 
     if (amountError) {
-      alert("The amount exceeds the available balance.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Amount Exceeded',
+        text: 'The amount exceeds the available balance.',
+      });
       return;
     }
 
     if (amountInvalid) {
-      alert("Please enter a valid amount.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid Amount',
+        text: 'Please enter a valid amount.',
+      });
       return;
     }
 
@@ -203,7 +212,7 @@ function NewTransactionData() {
         <p>Type: <strong>${formData.accountType}</strong></p>
         <p>Source Account: <strong>${formData.sourceAccount}</strong></p>
         <p>Destination Account: <strong>${formData.destinationAccount}</strong></p>
-        <p>Amount: <strong>${formData.amount}</strong></p>
+        <p>Amount: <strong>${formatAmountToARS(numericAmount)}</strong></p>
       `,
       icon: 'warning',
       showCancelButton: true,
@@ -229,7 +238,6 @@ function NewTransactionData() {
               icon: 'success',
               confirmButtonText: 'OK'
             }).then(() => {
-              // Actualizar saldos en el estado local
               updateAccountBalances(formData.sourceAccount, formData.destinationAccount, numericAmount);
 
               dispatch(loadCurrentUserAction());
@@ -279,7 +287,6 @@ function NewTransactionData() {
       <div className="transaction-form-container">
         <img className="transaction-image" src="newTransaction.png" alt="newTransaction" />
         <form onSubmit={handleSubmit} className="transaction-form">
-          {/* Tipo de cuenta de destino */}
           <div className="account-type-container">
             <label className="account-type-label">
               Own
@@ -316,7 +323,6 @@ function NewTransactionData() {
             </label>
           </div>
 
-          {/* Campo de cuenta de origen */}
           <div className="form-group">
             <label className="form-label" htmlFor="sourceAccount">Select source account:</label>
             <select
@@ -333,7 +339,6 @@ function NewTransactionData() {
             </select>
           </div>
 
-          {/* Campo de cuenta de destino */}
           <div className="form-group">
             <p className="error-message">{serverError}</p>
             <label className="form-label" htmlFor="destinationAccount">Destination account:</label>
@@ -383,7 +388,6 @@ function NewTransactionData() {
             )}
           </div>
 
-          {/* Campo para el monto de la transacción */}
           <div className="form-group">
             <label className="form-label" htmlFor="amount">Amount:</label>
             <input
@@ -393,7 +397,7 @@ function NewTransactionData() {
               name="amount"
               value={formData.amount}
               onChange={handleAmountChange}
-              onBlur={handleAmountBlur} // Evento que aplica el formato al salir del input
+              onBlur={handleAmountBlur}
               disabled={!selectedAccount}
             />
             {amountInvalid && (
@@ -411,7 +415,6 @@ function NewTransactionData() {
             )}
           </div>
 
-          {/* Botón de envío */}
           <button
             type="submit"
             className={`submit-button ${!isFormValid ? 'button-disabled' : ''}`}
@@ -420,7 +423,6 @@ function NewTransactionData() {
             Send
           </button>
 
-          {/* Mensaje de error del servidor */}
           {serverError && (
             <p className="error-message">{serverError}</p>
           )}

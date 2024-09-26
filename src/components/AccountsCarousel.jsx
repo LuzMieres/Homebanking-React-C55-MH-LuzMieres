@@ -9,6 +9,7 @@ const AccountsCarousel = ({ accounts, onAccountClick }) => {
     setCurrentAccountIndex((prevIndex) => (prevIndex + 1) % accounts.length);
   };
 
+  // Función para ir a la cuenta anterior
   const prevAccount = () => {
     setCurrentAccountIndex((prevIndex) =>
       prevIndex === 0 ? accounts.length - 1 : prevIndex - 1

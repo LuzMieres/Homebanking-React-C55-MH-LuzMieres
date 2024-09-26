@@ -41,12 +41,14 @@ function NewLoanData() {
   const dispatch = useDispatch();
   const { client, status, error } = useSelector((state) => state.currentUser);
 
+  // Cargar datos del cliente al iniciar
   useEffect(() => {
     if (status === 'idle') {
       dispatch(loadCurrentUserAction());
     }
   }, [dispatch, status]);
 
+  // Mostrar alerta de error si existe
   useEffect(() => {
     if (error) {
       Swal.fire({
@@ -57,11 +59,13 @@ function NewLoanData() {
     }
   }, [error]);
 
+  // Verificar si el formulario es válido
   useEffect(() => {
     const isValid = formData.name && formData.sourceAccount && formData.amount && formData.payments && !amountError;
     setIsFormValid(isValid);
   }, [formData, amountError]);
 
+  // Manejar cambio de tipo de préstamo
   function handleLoanChange(event) {
     const selectedName = event.target.value;
     const loan = availableLoans.find(l => l.name === selectedName);
@@ -75,6 +79,7 @@ function NewLoanData() {
     setAmountError(false);
   }
 
+  // Manejar cambio de cuenta de origen
   function handleAccountChange(event) {
     const selectedAccount = event.target.value;
     setFormData(prevState => ({
@@ -84,6 +89,7 @@ function NewLoanData() {
     setSelectedAccount(selectedAccount);
   }
 
+  // Manejar cambio de monto y validación de monto máximo
   function handleAmountChange(event) {
     let enteredAmount = event.target.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
     enteredAmount = enteredAmount ? parseFloat(enteredAmount) : ''; // Convertir a número si no está vacío
@@ -99,6 +105,7 @@ function NewLoanData() {
     }
   }
 
+  // Formatear monto a ARS al perder foco
   function handleAmountBlur() {
     const formattedAmount = formatAmountToARS(formData.amount);
     setFormData(prevState => ({
@@ -107,6 +114,7 @@ function NewLoanData() {
     }));
   }
 
+  // Función para formatear el monto a ARS
   function formatAmountToARS(amount) {
     if (typeof amount !== 'number' || isNaN(amount)) {
       return '';
@@ -114,6 +122,7 @@ function NewLoanData() {
     return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
   }
 
+  // Manejar cambio en el número de pagos
   function handlePaymentsChange(event) {
     const selectedPayments = event.target.value;
     setFormData(prevState => ({
@@ -122,6 +131,7 @@ function NewLoanData() {
     }));
   }
 
+  // Enviar solicitud de préstamo
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -145,7 +155,7 @@ function NewLoanData() {
 
     const newLoan = {
       loanName: formData.name,
-      amount: parseFloat(formData.amount),
+      amount: parseFloat(formData.amount.replace(/[^0-9.-]+/g, "")), // Convertir a número eliminando caracteres de formato
       payments: formData.payments,
       destinationAccountNumber: formData.sourceAccount,
     };
@@ -164,6 +174,12 @@ function NewLoanData() {
             navigate('/loans');
           }, 1500);
         });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while requesting the loan. Please try again later.',
+        });
       }
     });
   }
@@ -173,14 +189,14 @@ function NewLoanData() {
   }
 
   return (
-    <div className="new-loan-container">
-      <div className="loan-form-container">
-        <img className="loan-image" src="newLoan.png" alt="newLoan" />
-        <form onSubmit={handleSubmit} className="loan-form">
+    <div className="new-loan-container flex flex-col items-center">
+      <div className="loan-form-container bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <img className="loan-image w-full h-32 mb-4 object-cover rounded" src="newLoan.png" alt="newLoan" />
+        <form onSubmit={handleSubmit} className="loan-form flex flex-col gap-4">
           <div className="form-group">
             <label className="form-label" htmlFor="loanType">Select Loan Type</label>
             <select
-              className="form-select"
+              className="form-select border p-2 rounded"
               id="loanType"
               name="name"
               value={formData.name}
@@ -195,7 +211,7 @@ function NewLoanData() {
           <div className="form-group">
             <label className="form-label" htmlFor="amount">Amount</label>
             <input
-              className={`form-input ${amountError ? 'input-error' : ''}`}
+              className={`form-input border p-2 rounded ${amountError ? 'border-red-500' : ''}`}
               type="text"
               id="amount"
               name="amount"
@@ -212,7 +228,7 @@ function NewLoanData() {
           <div className="form-group">
             <label className="form-label" htmlFor="payments">Select Payments</label>
             <select
-              className="form-select"
+              className="form-select border p-2 rounded"
               id="payments"
               name="payments"
               value={formData.payments}
@@ -230,7 +246,7 @@ function NewLoanData() {
           <div className="form-group">
             <label className="form-label" htmlFor="sourceAccount">Select Account</label>
             <select
-              className="form-select"
+              className="form-select border p-2 rounded"
               id="sourceAccount"
               name="sourceAccount"
               value={formData.sourceAccount}
@@ -244,7 +260,7 @@ function NewLoanData() {
           </div>
           <button
             type="submit"
-            className={`submit-button ${!isFormValid ? 'button-disabled' : ''}`}
+            className={`submit-button bg-blue-800 text-white p-2 rounded ${!isFormValid ? 'bg-gray-400 cursor-not-allowed' : 'hover:bg-blue-600 transition-colors duration-300'}`}
             disabled={!isFormValid}
           >
             Request Loan
