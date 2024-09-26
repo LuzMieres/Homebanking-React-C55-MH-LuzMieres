@@ -3,7 +3,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Variables CSS */
+/* Variables CSS (mejor manejar en tailwind.config.js) */
 :root {
   --color-dark-blue: #002f6c;
   --color-light-blue: #00b2ff;
@@ -19,27 +19,16 @@
 html, body, #root {
   height: 100%;
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif; /* Si 'Inter' está cargada correctamente */
 }
 
 /* Ocultar scrollbar */
 .scroll-hidden {
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  -ms-overflow-style: none; /* IE 10+ */
   scrollbar-width: none; /* Firefox */
 }
 .scroll-hidden::-webkit-scrollbar {
   display: none; /* Chrome, Safari y Opera */
-}
-
-/* Clases Utilitarias de Flex */
-.flex {
-  display: flex;
-}
-.flex-grow {
-  flex-grow: 1;
-}
-.min-h-screen {
-  min-height: 100vh;
 }
 
 /* ------------------------------------ */
@@ -54,41 +43,26 @@ html, body, #root {
   @apply text-[2.5rem] text-[var(--color-white)];
 }
 .menu-button {
-  @apply bg-[var(--color-dark-blue)] text-[1.875rem] text-[var(--color-white)] px-3 border-none cursor-pointer;
-  display: block;
+  @apply bg-[var(--color-dark-blue)] text-[1.875rem] text-[var(--color-white)] px-3 border-none cursor-pointer block md:hidden; /* Se puede simplificar en el media query */
 }
-
-@media (min-width: 768px) {
-  .menu-button {
-    display: none; /* Ocultar en pantallas md y mayores */
-  }
-}
-
 .back-button {
   @apply absolute left-2 top-[80px] bg-[var(--color-dark-blue)] text-[var(--color-white)] p-1 border-none cursor-pointer;
 }
 
 /* Navegación */
 .nav {
-  @apply absolute top-[100%] w-full bg-[var(--color-dark-blue)] z-10 flex flex-col items-center gap-4 transition-all duration-300 ease-in-out;
-  display: none;
+  @apply absolute top-[100%] w-full bg-[var(--color-dark-blue)] z-10 flex flex-col items-center gap-4 transition-all duration-300 ease-in-out hidden; /* default: hidden */
 }
 .nav.show {
-  display: flex;
+  @apply flex;
 }
 @media (min-width: 768px) {
   .nav {
-    @apply static flex-row justify-around items-center gap-8 w-full h-auto box-shadow-none;
-    display: flex;
+    @apply static flex-row justify-around items-center gap-8 w-full h-auto box-shadow-none flex;
   }
 }
 .nav-links {
-  @apply flex flex-col gap-4;
-}
-@media (min-width: 768px) {
-  .nav-links {
-    @apply flex-row gap-8;
-  }
+  @apply flex flex-col gap-4 md:flex-row md:gap-8;
 }
 .nav-link, .active-link {
   @apply no-underline text-[var(--color-white)] text-sm transition-colors duration-300;
@@ -99,11 +73,10 @@ html, body, #root {
 
 /* Botón de logout */
 .logout-button {
-  @apply p-3 bg-[var(--color-red)] text-[var(--color-white)] h-12 w-12 flex items-center justify-center mt-4 cursor-pointer;
-  transition: background-color 0.3s;
+  @apply p-3 bg-[var(--color-red)] text-[var(--color-white)] h-12 w-12 flex items-center justify-center mt-4 cursor-pointer transition-colors duration-300;
 }
 .logout-button:hover {
-  background-color: #fc8181; /* hover:bg-red-400 */
+  @apply bg-red-400;
 }
 
 /* ------------------------------------ */
@@ -120,45 +93,25 @@ html, body, #root {
   @apply flex justify-between items-center w-full max-w-[1200px] gap-4 flex-wrap;
 }
 .footer-links {
-  @apply flex flex-col items-center gap-2;
-}
-@media (min-width: 640px) {
-  .footer-links {
-    @apply flex-row items-center;
-  }
+  @apply flex flex-col items-center gap-2 sm:flex-row sm:items-center; /* Combinación de media query */
 }
 .footer-text, .footer-link {
-  @apply text-sm text-center transition-colors duration-300;
-}
-@media (min-width: 640px) {
-  .footer-text, .footer-link {
-    @apply text-lg;
-  }
+  @apply text-sm text-center transition-colors duration-300 sm:text-lg;
 }
 .footer-link {
   @apply no-underline text-[var(--color-white)];
 }
 .footer-link:hover {
-  color: #63b3ed; /* hover:text-gray-200 */
+  @apply text-[#63b3ed]; /* hover:text-gray-200 */
 }
 .footer-icons {
   @apply flex gap-2 justify-center items-center;
 }
 .footer-icon {
-  @apply w-8 h-8 transition-transform duration-300;
+  @apply w-8 h-8 transition-transform duration-300 sm:w-10 sm:h-10 xl:w-14 xl:h-14; /* Se puede combinar en una línea */
 }
 .footer-icon:hover {
-  transform: scale(1.1);
-}
-@media (min-width: 640px) {
-  .footer-icon {
-    @apply w-10 h-10;
-  }
-}
-@media (min-width: 1024px) {
-  .footer-icon {
-    @apply w-14 h-14;
-  }
+  @apply scale-110;
 }
 
 /* ------------------------------------ */
@@ -174,64 +127,34 @@ html, body, #root {
 }
 @media (min-width: 640px) {
   .carousel-container, .accounts-carousel-container {
-    max-width: 90%;
+    @apply max-w-[90%];
   }
 }
 @media (min-width: 768px) {
   .carousel-container, .accounts-carousel-container {
-    max-width: 80%;
+    @apply max-w-[80%];
   }
 }
 @media (min-width: 1024px) {
   .carousel-container, .accounts-carousel-container {
-    max-width: 70%;
+    @apply max-w-[70%];
   }
 }
 @media (min-width: 1280px) {
   .carousel-container, .accounts-carousel-container {
-    max-width: 60%;
+    @apply max-w-[60%];
   }
 }
 @media (min-width: 1536px) {
   .carousel-container, .accounts-carousel-container {
-    max-width: 50%;
+    @apply max-w-[50%];
   }
 }
 
 /* ------------------------------------ */
 /* ESTILOS PARA TARJETAS */
 .card {
-  @apply w-full max-w-[300px] h-auto rounded-lg relative bg-center bg-cover bg-no-repeat shadow-lg;
-}
-@media (min-width: 640px) {
-  .card {
-    @apply max-w-[350px];
-  }
-}
-@media (min-width: 768px) {
-  .card {
-    @apply max-w-[400px];
-  }
-}
-@media (min-width: 1024px) {
-  .card {
-    @apply max-w-[450px];
-  }
-}
-@media (min-width: 1280px) {
-  .card {
-    @apply max-w-[500px];
-  }
-}
-@media (min-width: 1536px) {
-  .card {
-    @apply max-w-[550px];
-  }
-}
-@media (min-width: 2560px) {
-  .card {
-    @apply max-w-[700px];
-  }
+  @apply w-full max-w-[300px] h-auto rounded-lg relative bg-center bg-cover bg-no-repeat shadow-lg sm:max-w-[350px] md:max-w-[400px] lg:max-w-[450px] xl:max-w-[500px] 2xl:max-w-[550px] [email protected]:max-w-[700px];
 }
 .card-front, .card-back {
   @apply w-full h-full rounded-lg bg-center bg-cover bg-no-repeat;
@@ -252,7 +175,7 @@ html, body, #root {
   @apply mt-4 text-[var(--color-white)] bg-[var(--color-blue-dark)] p-3 text-xl rounded-lg transition-transform transform-gpu;
 }
 .next-button:hover {
-  @apply bg-[var(--color-blue-light)] transform-y-[-2px];
+  @apply bg-[var(--color-blue-light)] translate-y-[-2px];
 }
 
 /* ------------------------------------ */
