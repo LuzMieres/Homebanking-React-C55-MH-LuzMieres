@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+// Acción para solicitar un nuevo préstamo
 export const requestNewLoanAction = createAsyncThunk(
   "loans/requestNewLoan",
   async ({ loanName, amount, payments, destinationAccountNumber }, { rejectWithValue }) => {
@@ -32,7 +33,7 @@ export const requestNewLoanAction = createAsyncThunk(
         loanName,
         amount,
         payments,
-        destinationAccountNumber,
+        destinationAccountNumber, // Asegúrate de que este campo sea enviado correctamente
       }, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -49,6 +50,7 @@ export const requestNewLoanAction = createAsyncThunk(
     }
   }
 );
+
 
 // Acción para cargar los préstamos del cliente
 export const loadClientLoans = createAsyncThunk(

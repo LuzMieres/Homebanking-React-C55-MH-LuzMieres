@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { loadClientLoans } from '../redux/actions/loanActions'; // Corrige la importación
+import { loadClientLoans } from '../redux/actions/loanActions';
 import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction'; // Corrige la importación
 import '../styles/style.css';
 
@@ -86,8 +86,8 @@ function LoansData() {
             </thead>
             <tbody>
               {loans.map((loan, index) => (
-                <tr 
-                  key={index} 
+                <tr
+                  key={index}
                   className="loans-table-row"
                   onClick={() => handleRowClick(loan)}
                 >
@@ -96,10 +96,11 @@ function LoansData() {
                   <td className="loans-table-cell">{formatAmountToARS(loan.creditedAmount)}</td>
                   <td className="loans-table-cell">{formatAmountToARS(loan.totalAmount)}</td>
                   <td className="loans-table-cell">{loan.payments}</td>
-                  <td className="loans-table-cell">{loan.depositAccount || 'N/A'}</td>
+                  <td className="loans-table-cell">{loan.depositAccount || 'N/A'}</td> {/* Revisa que depositAccount tenga el valor correcto */}
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
       ) : (

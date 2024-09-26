@@ -463,6 +463,7 @@ main {
   justify-content: center; /* Centrar el botón de logout */
   align-items: center;
   margin-top: 1rem; /* Espacio adicional arriba */
+  margin-left: 20px;
 }
 
 /* Ajuste en el estilo del botón de logout */

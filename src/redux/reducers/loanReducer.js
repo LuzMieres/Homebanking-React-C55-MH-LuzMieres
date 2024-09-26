@@ -15,8 +15,10 @@ const loanReducer = createReducer(initialState, (builder) => {
     })
     .addCase(requestNewLoanAction.fulfilled, (state, action) => {
       console.log("Nuevo préstamo creado:", action.payload);
-      state.loans.push(action.payload); // Agrega el nuevo préstamo a la lista de préstamos
-      state.status = "succeeded"; // Cambié "success" por "succeeded" para mantener consistencia
+      // Asegúrate de que los datos del préstamo estén correctos en la respuesta
+      const newLoan = action.payload;
+      state.loans.push(newLoan); // Agrega el nuevo préstamo a la lista de préstamos
+      state.status = "succeeded"; 
     })
     .addCase(requestNewLoanAction.rejected, (state, action) => {
       state.status = "failed";
@@ -38,5 +40,6 @@ const loanReducer = createReducer(initialState, (builder) => {
       state.loans = action.payload.loans;
     });
 });
+
 
 export default loanReducer;

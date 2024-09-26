@@ -28,6 +28,8 @@ const availableLoans = [
   },
 ];
 
+// Componente NewLoanData
+
 function NewLoanData() {
   const [formData, setFormData] = useState({
     name: '',
@@ -35,9 +37,7 @@ function NewLoanData() {
     amount: '',
     payments: '',
   });
-  const [rawAmount, setRawAmount] = useState(''); // Nuevo estado para el valor sin formato
-
-  const { setSelectedAccount } = useContext(LoanContext);
+  const [rawAmount, setRawAmount] = useState(''); // Estado para el valor sin formato
   const [selectedLoan, setSelectedLoan] = useState(null);
   const [amountError, setAmountError] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
@@ -91,7 +91,6 @@ function NewLoanData() {
       ...prevState,
       sourceAccount: selectedAccount,
     }));
-    setSelectedAccount(selectedAccount);
   }
 
   // Manejar cambio de monto y validación de monto máximo
@@ -179,6 +178,7 @@ function NewLoanData() {
       destinationAccountNumber: formData.sourceAccount,
     };
 
+    // Aquí es donde se hace el dispatch de la acción para solicitar el préstamo
     dispatch(requestNewLoanAction(newLoan)).then((result) => {
       if (result.meta.requestStatus === 'fulfilled') {
         dispatch(loadCurrentUserAction()).then(() => {
