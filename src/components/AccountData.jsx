@@ -76,7 +76,17 @@ function AccountDetails() {
           </h2>
           <div className="account-balance">
             <strong className="balance-label">Balance:</strong>{" "}
-            {showBalance ? formatAmountToARS(account.balance) : "••••••••"}
+            <span
+              className={
+                showBalance
+                  ? account.balance >= 0
+                    ? "text-green-500" // Estilo verde para saldo positivo
+                    : "text-red-500" // Estilo rojo para saldo negativo
+                  : ""
+              }
+            >
+              {showBalance ? formatAmountToARS(account.balance) : "••••••••"}
+            </span>
             <button
               type="button"
               onClick={() => setShowBalance(!showBalance)} // Alternar la visualización del balance
@@ -116,8 +126,20 @@ function AccountDetails() {
                   >
                     <td className="transaction-data">{transaction.date}</td>
                     <td className="transaction-data">{transaction.hour}</td>
-                    <td className="transaction-data">{transaction.type}</td>
-                    <td className="transaction-data">{formatAmountToARS(transaction.amount)}</td>
+                    <td
+                      className={`transaction-data ${
+                        transaction.type === "DEBIT" ? "text-red-500" : "text-green-500"
+                      }`}
+                    >
+                      {transaction.type}
+                    </td>
+                    <td
+                      className={`transaction-data ${
+                        transaction.type === "DEBIT" ? "text-red-500" : "text-green-500"
+                      }`}
+                    >
+                      {formatAmountToARS(transaction.amount)}
+                    </td>
                     <td className="transaction-data">{transaction.description}</td>
                   </tr>
                 ))}

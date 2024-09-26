@@ -5,7 +5,7 @@ function Footer({ className = "" }) {
   return (
     <footer className={`footer ${className}`}>
       <div className="footer-content">
-        <div className="footer-links">
+        <div className="footer-links md:flex md:flex-row md:gap-3 lg:flex lg:flex-row lg:gap-5 xl:flex xl:flex-row xl:gap-5 2xl:flex 2xl:flex-row 2xl:gap-5">
           <p className="footer-text">© 2023. All rights reserved.</p>
           <a
             className="footer-link"

@@ -39,9 +39,19 @@ function LoansData() {
     return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
   }
 
+  // Calcula el total con intereses si no está presente
+  function calculateTotalWithInterest(loan) {
+    if (loan.totalAmount) {
+      return loan.totalAmount; // Si ya está presente, no hacer nada
+    }
+    const interestRate = loan.interestRate || 20; // Supongamos un interés del 20% si no está presente
+    const totalWithInterest = loan.amount + (loan.amount * interestRate / 100);
+    return totalWithInterest;
+  }
+
   function handleRowClick(loan) {
     // Obtener el total con intereses directamente desde el objeto `loan` si ya viene calculado desde el backend
-    const totalAmount = formatAmountToARS(loan.totalAmount);
+    const totalAmount = formatAmountToARS(calculateTotalWithInterest(loan));
 
     Swal.fire({
       title: 'Loan Details',
@@ -52,7 +62,7 @@ function LoansData() {
           <p><strong>Credited Amount:</strong> ${formatAmountToARS(loan.amount)}</p>
           <p><strong>Total with Interest:</strong> ${totalAmount}</p>
           <p><strong>Payments:</strong> ${loan.payments}</p>
-          <p><strong>Deposit Account:</strong> ${selectedAccount || 'N/A'}</p>
+          <p><strong>Deposit Account:</strong> ${loan.depositAccount || selectedAccount || 'N/A'}</p>
         </div>
       `,
       icon: 'info',
@@ -80,6 +90,7 @@ function LoansData() {
                 <th className="loans-table-header-cell">CREDITED AMOUNT</th>
                 <th className="loans-table-header-cell">TOTAL WITH INTEREST</th>
                 <th className="loans-table-header-cell">PAYMENTS</th>
+                <th className="loans-table-header-cell">DEPOSIT ACCOUNT</th>
               </tr>
             </thead>
             <tbody>
@@ -92,8 +103,9 @@ function LoansData() {
                   <td className="loans-table-cell">{loan.loanType || loan.name}</td>
                   <td className="loans-table-cell">{formatAmountToARS(loan.amount)}</td>
                   <td className="loans-table-cell">{formatAmountToARS(loan.amount)}</td>
-                  <td className="loans-table-cell">{formatAmountToARS(loan.totalAmount)}</td> {/* Mostramos el total con intereses directamente del backend */}
+                  <td className="loans-table-cell">{formatAmountToARS(calculateTotalWithInterest(loan))}</td> {/* Calculamos el total con intereses */}
                   <td className="loans-table-cell">{loan.payments}</td>
+                  <td className="loans-table-cell">{loan.depositAccount || 'N/A'}</td> {/* Mostrar la cuenta de depósito */}
                 </tr>
               ))}
             </tbody>

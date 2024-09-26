@@ -47,7 +47,7 @@ const AccountsCarousel = ({ accounts, onAccountClick }) => {
                 <p className="account-balance">
                   Balance: {new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(account.balance)}
                 </p>
-                <p className="account-creation-date">
+                <p className="account-creation-date text-black">
                   Creation Date: {account.creationDate || new Date().toLocaleDateString()}
                 </p>
               </div>

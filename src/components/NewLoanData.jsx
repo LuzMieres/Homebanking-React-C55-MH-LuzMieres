@@ -32,6 +32,7 @@ function NewLoanData() {
     amount: '',
     payments: '',
   });
+  const [rawAmount, setRawAmount] = useState(''); // Nuevo estado para el valor sin formato
 
   const { setSelectedAccount } = useContext(LoanContext);
   const [selectedLoan, setSelectedLoan] = useState(null);
@@ -61,9 +62,9 @@ function NewLoanData() {
 
   // Verificar si el formulario es válido
   useEffect(() => {
-    const isValid = formData.name && formData.sourceAccount && formData.amount && formData.payments && !amountError;
+    const isValid = formData.name && formData.sourceAccount && rawAmount && formData.payments && !amountError;
     setIsFormValid(isValid);
-  }, [formData, amountError]);
+  }, [formData, rawAmount, amountError]);
 
   // Manejar cambio de tipo de préstamo
   function handleLoanChange(event) {
@@ -76,6 +77,7 @@ function NewLoanData() {
       payments: loan ? loan.payments[0] : '',
       amount: '',
     }));
+    setRawAmount(''); // Reiniciar el valor sin formato
     setAmountError(false);
   }
 
@@ -92,10 +94,13 @@ function NewLoanData() {
   // Manejar cambio de monto y validación de monto máximo
   function handleAmountChange(event) {
     let enteredAmount = event.target.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
+    setRawAmount(enteredAmount); // Guardar el valor sin formato
+
     enteredAmount = enteredAmount ? parseFloat(enteredAmount) : ''; // Convertir a número si no está vacío
+    const formattedAmount = formatAmountToARS(enteredAmount); // Formatear para mostrar en el input
     setFormData(prevState => ({
       ...prevState,
-      amount: enteredAmount,
+      amount: formattedAmount,
     }));
 
     if (selectedLoan && enteredAmount > selectedLoan.maxAmount) {
@@ -107,11 +112,14 @@ function NewLoanData() {
 
   // Formatear monto a ARS al perder foco
   function handleAmountBlur() {
-    const formattedAmount = formatAmountToARS(formData.amount);
-    setFormData(prevState => ({
-      ...prevState,
-      amount: formattedAmount,
-    }));
+    const numericValue = rawAmount ? parseFloat(rawAmount) : ''; // Usar el valor sin formato
+    if (!isNaN(numericValue)) {
+      const formattedAmount = formatAmountToARS(numericValue);
+      setFormData(prevState => ({
+        ...prevState,
+        amount: formattedAmount,
+      }));
+    }
   }
 
   // Función para formatear el monto a ARS
@@ -155,7 +163,7 @@ function NewLoanData() {
 
     const newLoan = {
       loanName: formData.name,
-      amount: parseFloat(formData.amount.replace(/[^0-9.-]+/g, "")), // Convertir a número eliminando caracteres de formato
+      amount: parseFloat(rawAmount), // Usar el valor sin formato
       payments: formData.payments,
       destinationAccountNumber: formData.sourceAccount,
     };

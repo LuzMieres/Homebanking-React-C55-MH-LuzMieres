@@ -101,36 +101,36 @@ function NewTransactionData() {
   }
 
   function handleAmountChange(event) {
-    // Obtener el valor ingresado sin caracteres no numéricos
-    let enteredAmount = event.target.value.replace(/[^0-9]/g, '');
+    // Obtener el valor ingresado sin caracteres no numéricos excepto el punto decimal
+    let enteredAmount = event.target.value.replace(/[^0-9.]/g, '');
     const numericValue = parseFloat(enteredAmount);
-
+  
     // Actualizar el estado con el valor numérico sin formato
     setFormData(prevState => ({
       ...prevState,
       amount: enteredAmount,
     }));
-
+  
     // Validar si el valor es numérico y mayor a cero
     if (isNaN(numericValue) || numericValue <= 0) {
       setAmountInvalid(true);
       setAmountError(false);
       return;
     }
-
+  
     // Verificar si el monto excede el saldo disponible
     if (selectedAccount && numericValue > selectedAccount.balance) {
       setAmountError(true);
     } else {
       setAmountError(false);
     }
-
+  
     setAmountInvalid(false);
   }
 
   function handleAmountBlur() {
     const numericValue = parseFloat(formData.amount);
-
+  
     if (isNaN(numericValue) || numericValue <= 0) {
       setFormData(prevState => ({
         ...prevState,
@@ -140,11 +140,12 @@ function NewTransactionData() {
       setAmountError(false);
       return;
     }
-
-    const formattedAmount = formatAmountToARS(numericValue);
+  
+    // No formatear el monto en este punto para evitar confusión.
+    // Solo mantener el valor como número sin separadores adicionales.
     setFormData(prevState => ({
       ...prevState,
-      amount: formattedAmount,
+      amount: numericValue.toFixed(2),
     }));
   }
 
@@ -177,7 +178,8 @@ function NewTransactionData() {
 
   function handleSubmit(event) {
     event.preventDefault();
-
+  
+    // Convertir el monto a número sin formato
     const numericAmount = parseFloat(formData.amount.replace(/[^0-9.-]+/g, ''));
     if (!formData.sourceAccount || !formData.destinationAccount || isNaN(numericAmount)) {
       Swal.fire({
@@ -187,7 +189,7 @@ function NewTransactionData() {
       });
       return;
     }
-
+  
     if (amountError) {
       Swal.fire({
         icon: 'error',
@@ -196,7 +198,7 @@ function NewTransactionData() {
       });
       return;
     }
-
+  
     if (amountInvalid) {
       Swal.fire({
         icon: 'error',
@@ -205,7 +207,7 @@ function NewTransactionData() {
       });
       return;
     }
-
+  
     Swal.fire({
       title: 'Confirm Transaction',
       html: `
@@ -223,9 +225,9 @@ function NewTransactionData() {
         const newTransaction = {
           originAccountNumber: formData.sourceAccount,
           destinationAccountNumber: formData.destinationAccount,
-          amount: numericAmount,
+          amount: numericAmount, // Enviar el valor numérico correctamente formateado
         };
-
+  
         axios.post("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/transactions/", newTransaction, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -239,9 +241,9 @@ function NewTransactionData() {
               confirmButtonText: 'OK'
             }).then(() => {
               updateAccountBalances(formData.sourceAccount, formData.destinationAccount, numericAmount);
-
+  
               dispatch(loadCurrentUserAction());
-
+  
               if (formData.accountType === 'Other' && !savedAccounts.includes(formData.destinationAccount)) {
                 Swal.fire({
                   title: 'Save Contact',
@@ -275,7 +277,7 @@ function NewTransactionData() {
       }
     });
   }
-
+  
   if (!client) {
     return <div className="text-center text-gray-600">Loading...</div>;
   }

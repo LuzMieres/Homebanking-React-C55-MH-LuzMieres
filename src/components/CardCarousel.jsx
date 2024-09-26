@@ -2,58 +2,68 @@ import React, { useState } from 'react';
 import '../styles/style.css';
 
 const CardCarousel = ({ cards }) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [flippedCards, setFlippedCards] = useState(Array(cards.length).fill(false));
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
   // Función para ir a la siguiente tarjeta
   const nextCard = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % cards.length);
+    setCurrentCardIndex((prevIndex) => (prevIndex + 1) % cards.length);
   };
 
-  // Función para voltear la tarjeta
-  const toggleFlip = (index) => {
-    setFlippedCards((prevState) => 
-      prevState.map((flipped, i) => (i === index ? !flipped : flipped))
+  // Función para ir a la tarjeta anterior
+  const prevCard = () => {
+    setCurrentCardIndex((prevIndex) =>
+      prevIndex === 0 ? cards.length - 1 : prevIndex - 1
     );
   };
 
   return (
-    <div className="carousel-container">
-      {/* Contenedor principal para centrar la tarjeta */}
-      <div className="carousel-cards-container">
+    <div className="accounts-carousel-container">
+      {/* Contenedor principal del carrusel */}
+      <div className="accounts-carousel">
         <div
-          className="carousel-cards"
-          style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
+          className="accounts-carousel-inner"
+          style={{ transform: `translateX(-${currentCardIndex * 100}%)` }}
         >
           {cards.map((card, index) => (
-            <div
-              key={card.id}
-              className={`carousel-card ${flippedCards[index] ? 'flipped' : ''}`}
-              onClick={() => toggleFlip(index)}
-            >
-              {/* Contenedor para mostrar frente y dorso juntos */}
-              <div className="card-pair">
-                {/* Frente de la tarjeta */}
-                <div className="card card-front" style={{
-                  backgroundImage: `url(${card.color === 'GOLD' ? `${card.type === 'CREDIT' ? 'CreditCardGoldFrente.png' : 'DEBITCardGoldFrente.png'}` : card.color === 'SILVER' ? `${card.type === 'CREDIT' ? 'CreditCardSilverFrente.png' : 'DEBITCardSilverFrente.png'}` : `${card.type === 'CREDIT' ? 'CreditCardTitaniumFrente.png' : 'DEBITCardTitaniumFrente.png'}`})`
-                }}>
-                  <div className={`card-content ${card.color === 'SILVER' ? 'text-black' : 'text-white'}`}>
-                    <div className="card-details">
-                      <p className="card-number">{card.number}</p>
-                      <p className="cardholder">{card.cardholder}</p>
-                      <p className="card-dates">
-                        <span className="text-xs">FROM</span> {new Date(card.fromDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} <span className="text-xs">THRU</span> {new Date(card.thruDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* Dorso de la tarjeta */}
-                <div className="card card-back" style={{
-                  backgroundImage: `url(${card.color === 'GOLD' ? 'CardGoldDorso.png' : card.color === 'SILVER' ? 'CardSilverDorso.png' : 'CardTitaniumDorso.png'})`
-                }}>
-                  <div className={`card-content ${card.color === 'SILVER' ? 'text-black' : 'text-white'}`}>
-                    <p className="cvv"><span className="text-xs">CVV</span> {card.cvv}</p>
-                  </div>
+            <div key={index} className="accounts-carousel-card">
+              <div
+                className="account-card"
+                style={{
+                  backgroundImage: `url(${
+                    card.color === 'GOLD'
+                      ? card.type === 'CREDIT'
+                        ? 'CreditCardGoldFrente.png'
+                        : 'DEBITCardGoldFrente.png'
+                      : card.color === 'SILVER'
+                      ? card.type === 'CREDIT'
+                        ? 'CreditCardSilverFrente.png'
+                        : 'DEBITCardSilverFrente.png'
+                      : card.type === 'CREDIT'
+                      ? 'CreditCardTitaniumFrente.png'
+                      : 'DEBITCardTitaniumFrente.png'
+                  })`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              >
+                <div className="card-content">
+                  <p className="card-number">{card.number}</p>
+                  <p className="cardholder">{card.cardholder}</p>
+                  <p className="card-dates">
+                    <span className="text-xs">FROM</span>{' '}
+                    {new Date(card.fromDate).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                    })}{' '}
+                    <span className="text-xs">THRU</span>{' '}
+                    {new Date(card.thruDate).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                    })}
+                  </p>
+                  <p className="cvv">
+                    <span className="text-xs">CVV</span> {card.cvv}
+                  </p>
                 </div>
               </div>
             </div>
@@ -61,14 +71,23 @@ const CardCarousel = ({ cards }) => {
         </div>
       </div>
 
-      {/* Botón siguiente */}
-      <button
-        onClick={nextCard}
-        className="next-button"
-        disabled={cards.length <= 1}
-      >
-        Next Card
-      </button>
+      {/* Botones de navegación */}
+      <div className="carousel-buttons">
+        <button
+          onClick={prevCard}
+          className="prev-button"
+          disabled={cards.length <= 1}
+        >
+          Prev
+        </button>
+        <button
+          onClick={nextCard}
+          className="next-button"
+          disabled={cards.length <= 1}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

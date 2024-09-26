@@ -44,7 +44,7 @@ function Header() {
     <>
       <header className='header'>
         <div className='header-title'>
-          <h1 className='header-title-text'>Big Bank</h1>
+          <h1 className='header-title-text'>BigBank</h1>
         </div>
         {/* Botón del menú para pantallas pequeñas */}
         <button
@@ -58,7 +58,7 @@ function Header() {
 
       {/* Navegación, mostrar u ocultar basado en el estado showNav */}
       <nav className={`nav ${showNav ? 'show' : ''}`}>
-        <ul className='nav-links'>
+        <ul className='nav-links gap-2 md:gap-3 lg:gap-5 xl:gap-10 2xl:gap-10'>
           <button
             onClick={() => navigate(-1)}
             className="back-button"
