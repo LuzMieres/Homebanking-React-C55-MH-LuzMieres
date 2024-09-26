@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { requestNewLoanAction } from '../redux/actions/loanActions';
 import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction';
 import '../styles/style.css';
-import { LoanContext } from '../context/LoanContext'; // Importar el contexto
+import { LoanContext } from '../context/LoanContext';
 
 const availableLoans = [
   {
@@ -33,10 +33,10 @@ function NewLoanData() {
     payments: '',
   });
 
-  const { setSelectedAccount } = useContext(LoanContext); // Usar el contexto para actualizar selectedAccount
+  const { setSelectedAccount } = useContext(LoanContext);
   const [selectedLoan, setSelectedLoan] = useState(null);
-  const [amountError, setAmountError] = useState(false); 
-  const [isFormValid, setIsFormValid] = useState(false); 
+  const [amountError, setAmountError] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { client, status, error } = useSelector((state) => state.currentUser);
@@ -81,7 +81,7 @@ function NewLoanData() {
       ...prevState,
       sourceAccount: selectedAccount,
     }));
-    setSelectedAccount(selectedAccount); // Actualizar la cuenta seleccionada en el contexto
+    setSelectedAccount(selectedAccount);
   }
 
   function handleAmountChange(event) {
@@ -156,7 +156,6 @@ function NewLoanData() {
     return <div className="text-center text-gray-600">Loading...</div>;
   }
 
-  // Función para formatear el monto a la moneda local (ARS)
   function formatAmountToARS(amount) {
     if (typeof amount !== 'number' || isNaN(amount)) {
       return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
@@ -165,14 +164,14 @@ function NewLoanData() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-full p-4">
-      <div className="flex flex-col md:flex-row items-center justify-center w-[90%] bg-white p-2 rounded-lg shadow-2xl gap-4">
-        <img className="w-full md:w-1/2 h-auto object-cover mb-4 md:mb-0 lg:h-[60vh]" src="newLoan.png" alt="newLoan" />
-        <form onSubmit={handleSubmit} className="flex flex-col items-center w-full md:w-1/2 gap-2 lg:h-[60vh] pt-5">
-          <div className="w-full">
-            <label className="text-gray-700 text-xs sm:text-xl md:text-xs lg:text-sm block mb-1" htmlFor="loanType">Select Loan Type</label>
+    <div className="new-loan-container">
+      <div className="loan-form-container">
+        <img className="loan-image" src="newLoan.png" alt="newLoan" />
+        <form onSubmit={handleSubmit} className="loan-form">
+          <div className="form-group">
+            <label className="form-label" htmlFor="loanType">Select Loan Type</label>
             <select
-              className="w-full p-1 bg-blue-700 text-white text-xs sm:text-xl md:text-xs lg:text-sm rounded"
+              className="form-select"
               id="loanType"
               name="name"
               value={formData.name}
@@ -184,26 +183,26 @@ function NewLoanData() {
               ))}
             </select>
           </div>
-          <div className="w-full">
-            <label className="text-gray-700 text-xs sm:text-sm lg:text-sm md:text-xs lg:text-sm block mb-1" htmlFor="amount">Amount</label>
+          <div className="form-group">
+            <label className="form-label" htmlFor="amount">Amount</label>
             <input
-              className={`w-full p-1 bg-blue-700 text-white text-xs sm:text-sm md:text-xs lg:text-sm rounded ${amountError ? 'border-red-500' : ''}`}
+              className={`form-input ${amountError ? 'input-error' : ''}`}
               type="text"
               id="amount"
               name="amount"
-              value={formatAmountToARS(formData.amount)}
+              value={formData.amount}
               onChange={handleAmountChange}
             />
             {selectedLoan && (
-              <p className={`text-sm ${amountError ? 'text-red-500' : 'text-gray-500'} mt-1`}>
+              <p className={`amount-info ${amountError ? 'text-red-500' : 'text-gray-500'}`}>
                 Max amount: {formatAmountToARS(selectedLoan.maxAmount)}
               </p>
             )}
           </div>
-          <div className="w-full">
-            <label className="text-gray-700 text-xs sm:text-sm md:text-xs lg:text-sm block mb-1" htmlFor="payments">Select Payments</label>
+          <div className="form-group">
+            <label className="form-label" htmlFor="payments">Select Payments</label>
             <select
-              className="w-full p-1 bg-blue-700 text-white text-xs sm:text-sm md:text-xs lg:text-sm rounded"
+              className="form-select"
               id="payments"
               name="payments"
               value={formData.payments}
@@ -218,10 +217,10 @@ function NewLoanData() {
               )}
             </select>
           </div>
-          <div className="w-full">
-            <label className="text-gray-700 text-xs sm:text-sm md:text-xs lg:text-sm block mb-1" htmlFor="sourceAccount">Select Account</label>
+          <div className="form-group">
+            <label className="form-label" htmlFor="sourceAccount">Select Account</label>
             <select
-              className="w-full p-1 bg-blue-700 text-white text-xs sm:text-sm md:text-xs lg:text-sm rounded"
+              className="form-select"
               id="sourceAccount"
               name="sourceAccount"
               value={formData.sourceAccount}
@@ -235,7 +234,7 @@ function NewLoanData() {
           </div>
           <button
             type="submit"
-            className={`w-full p-1 rounded text-white transition-all duration-300 ${isFormValid ? 'bg-blue-800 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
+            className={`submit-button ${!isFormValid ? 'button-disabled' : ''}`}
             disabled={!isFormValid}
           >
             Request Loan

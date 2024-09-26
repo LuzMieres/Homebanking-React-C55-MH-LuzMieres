@@ -17,7 +17,6 @@ export default {
       text:{
         '5':'50px'
       }
-
     },
   },
   variants: {
@@ -27,4 +26,3 @@ export default {
   },
   plugins: [],
 }
-

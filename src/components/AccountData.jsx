@@ -30,20 +30,20 @@ function AccountDetails() {
   }, [client, id, status, dispatch]);
 
   if (status === "loading") {
-    return <div>Loading client data...</div>;
+    return <div className="loading-message">Loading client data...</div>;
   }
 
   if (status === "failed") {
-    return <div>Error loading client data: {error}</div>;
+    return <div className="error-message">Error loading client data: {error}</div>;
   }
 
   if (!client) {
-    return <div>No client data available.</div>;
+    return <div className="no-data-message">No client data available.</div>;
   }
 
   if (!account) {
     return (
-      <div>
+      <div className="account-not-found">
         Account not found for ID: {id}. Check if the account ID is correct.
       </div>
     );
@@ -67,20 +67,20 @@ function AccountDetails() {
   }));
 
   return (
-    <div className="w-full flex justify-center items-center min-h-[90vh]">
-      <div className="bg-gray-200 rounded-xl p-[20px] w-[80%] flex flex-col items-center gap-10 shadow-xl">
+    <div className="account-details-container">
+      <div className="account-info-container">
         {/* Información principal de la cuenta */}
-        <div className="w-full flex flex-col items-center justify-center relative">
-          <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-[40px] 2xl:text-[50px]">
+        <div className="account-header">
+          <h2 className="account-title">
             Your selected account {account.number}
           </h2>
-          <div className="flex justify-center items-center w-[80%] h-[100px] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] bg-blue-600 rounded-lg shadow-2xl text-white gap-2 text-xl md:text-2xl lg:text-3xl xl:text-[40px] 2xl:text-[50px] mt-[20px]">
-            <strong className="text-xl md:text-2xl lg:text-3xl xl:text-[40px] 2xl:text-[50px]">Balance:</strong>{" "}
+          <div className="account-balance">
+            <strong className="balance-label">Balance:</strong>{" "}
             {showBalance ? formatAmountToARS(account.balance) : "••••••••"}
             <button
               type="button"
               onClick={() => setShowBalance(!showBalance)} // Alternar la visualización del balance
-              className="w-10 h-10"
+              className="toggle-balance-button"
             >
               <img
                 src={
@@ -89,6 +89,7 @@ function AccountDetails() {
                     : "https://img.icons8.com/?size=100&id=13758&format=png&color=000000"
                 }
                 alt={showBalance ? "Hide balance" : "Show balance"}
+                className="toggle-balance-icon"
               />
             </button>
           </div>
@@ -96,35 +97,35 @@ function AccountDetails() {
 
         {/* Mostrar las transacciones si hay alguna disponible */}
         {simplifiedAccount.length > 0 ? (
-          <div className="w-full flex justify-center">
-            <table className="table-auto w-[90%] bg-blue-700 rounded-lg shadow-2xl">
+          <div className="transactions-table-container">
+            <table className="transactions-table">
               <thead>
                 <tr>
-                  <th className="text-xs text-white border border-white p-2">DATE</th>
-                  <th className="text-xs text-white border border-white p-2">HOUR</th>
-                  <th className="text-xs text-white border border-white p-2">TYPE</th>
-                  <th className="text-xs text-white border border-white p-2">AMOUNT</th>
-                  <th className="text-xs text-white border border-white p-2">DESCRIPTION</th>
+                  <th className="table-header">DATE</th>
+                  <th className="table-header">HOUR</th>
+                  <th className="table-header">TYPE</th>
+                  <th className="table-header">AMOUNT</th>
+                  <th className="table-header">DESCRIPTION</th>
                 </tr>
               </thead>
               <tbody>
                 {simplifiedAccount.map((transaction, index) => (
                   <tr
                     key={index}
-                    className={`even:bg-blue-600 odd:bg-blue-500 border border-gray-300 ${transaction.type.toLowerCase()}`}
+                    className={`transaction-row ${transaction.type.toLowerCase()}`}
                   >
-                    <td className="text-xs text-white border border-white p-2">{transaction.date}</td>
-                    <td className="text-xs text-white border border-white p-2">{transaction.hour}</td>
-                    <td className="text-xs text-white border border-white p-2">{transaction.type}</td>
-                    <td className="text-xs text-white border border-white p-2">{formatAmountToARS(transaction.amount)}</td>
-                    <td className="text-xs text-white border border-white p-2">{transaction.description}</td>
+                    <td className="transaction-data">{transaction.date}</td>
+                    <td className="transaction-data">{transaction.hour}</td>
+                    <td className="transaction-data">{transaction.type}</td>
+                    <td className="transaction-data">{formatAmountToARS(transaction.amount)}</td>
+                    <td className="transaction-data">{transaction.description}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : (
-          <p className="no-transactions text-xl md:text-2xl lg:text-3xl xl:text-[40px] 2xl:text-[50px] mt-10">
+          <p className="no-transactions">
             No transactions available for this account.
           </p>
         )}

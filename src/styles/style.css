@@ -1,424 +1,264 @@
+/* Importaciones de Tailwind CSS */
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-.scroll-hidden::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+/* Variables CSS */
+:root {
+  --color-dark-blue: #002f6c;
+  --color-light-blue: #00b2ff;
+  --color-white: #ffffff;
+  --color-gray-light: #e5e7eb;
+  --color-blue-light: #2563eb;
+  --color-blue-dark: #1d4ed8;
+  --color-red: #f56565;
+  --color-gray-dark: #374151;
 }
 
-.scroll-hidden {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.header {
-  display: flex;
-  justify-content: center;
-  gap: 44px;
-  align-items: center;
-  padding: 1rem;
-  height: 15vh;
-  background-color: #002f6c;
-  /* Azul oscuro BBVA */
-}
-
-h2 {
-  font-size: 30px;
-  color: rgb(29 78 216);
-}
-
-.nav {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute; /* Fijo solo para móviles */
-  top: -100%; /* Fuera de pantalla en móviles */
-  left: 0;
-  width: 100%;
-  background-color: #002f6c;
-  transition: top 0.5s ease; /* Transición en móviles */
-  z-index: 10;
-}
-
-.nav.show {
-  top: 12.5vh; /* Mostrar menú en móviles */
-}
-
-.navLinks {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.navLinks li {
-  margin: 1rem 0;
-}
-
-.navLinks a {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 1.5rem;
-  transition: color 0.3s ease;
-}
-
-.navLinks a:hover {
-  color: #00b2ff;
-  /* Azul claro BBVA */
-}
-
-/* styles.css */
-
-/* Asegurar que el body y el contenedor principal ocupen toda la altura de la pantalla */
+/* Estilos globales */
 html, body, #root {
   height: 100%;
   margin: 0;
+  font-family: 'Inter', sans-serif;
 }
 
-/* Estilo base para el contenedor principal */
+/* Ocultar scrollbar */
+.scroll-hidden {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+.scroll-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Opera */
+}
+
+/* Clases Utilitarias de Flex */
 .flex {
   display: flex;
 }
-
-/* Estilo para que el contenedor principal crezca para ocupar el espacio disponible */
 .flex-grow {
   flex-grow: 1;
 }
-
-/* Asegurar que el contenedor principal tenga una altura mínima de la pantalla */
 .min-h-screen {
   min-height: 100vh;
 }
 
-.footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  min-height: 10vh;
-  width: 100vw;
-  background-color: #002f6c;
-  color: #ffffff;
-  text-align: center;
-  padding: 5px;
-  box-sizing: border-box;
+/* ------------------------------------ */
+/* HEADER */
+.header {
+  @apply w-full h-[20vh] bg-[var(--color-dark-blue)] flex justify-between items-center p-4 relative z-10;
 }
-
-footer p,
-footer a {
-  margin: 0.5rem 0;
-  font-size: 1rem;
+.header-title {
+  @apply flex justify-center items-center;
 }
-
-footer a:hover {
-  color: #00b2ff;
-  /* Azul claro BBVA */
+.header-title-text {
+  @apply text-[2.5rem] text-[var(--color-white)];
 }
-
-footer img {
-  width: 30px;
-  height: 30px;
-  margin: 0.5rem;
-  filter: brightness(0) invert(1);
-  /* Convertir los logos a blanco */
-}
-
-.card-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.card-front,
-.card-back {
-  width: 360px;
-  height: 220px;
-  border-radius: 20px;
-  position: relative;
-}
-
-.card-front img,
-.card-back img {
-  width: 360px;
-  height: 220px;
-  border-radius: 20px;
-}
-
-.carousel {
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-  position: absolute;
-  top: 130vh;
-  width: 100vw;
-  height: 40vh;
-}
-
-.carousel-image {
-  object-fit: cover;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 40vh;
-  transition: opacity 4s ease-in-out;
-}
-
-.visible {
-  opacity: 1;
-  z-index: 1;
-}
-
-.hidden {
-  opacity: 0;
-  z-index: 0;
-}
-
-.ojo {
-  border: none;
-  background-color: transparent;
-}
-
-main {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Media Queries para pantallas más grandes */
-@media (min-width: 640px) {
-  .card-container {
-    width: 350px;
-  }
-
-  .contenedorCards {
-    flex-direction: row;
-  }
-
-  .carousel {
-    height: 40vh;
-  }
-
-  .carousel-image {
-    height: 40vh;
-  }
-
-  .nav.show {
-    top: 13.5vh;
-  }
+.menu-button {
+  @apply bg-[var(--color-dark-blue)] text-[1.875rem] text-[var(--color-white)] px-3 border-none cursor-pointer;
+  display: block;
 }
 
 @media (min-width: 768px) {
-  .header {
-    gap: 400px;
-  }
-
-  .nav {
-    position: static; /* Posicionamiento estático */
-    flex-direction: row; /* Menú en fila */
-    top: 0; /* Sin desplazamiento */
-    width: auto;
-    height: auto;
-    transition: none; /* Sin transición */
-    box-shadow: none; /* Sin sombra */
-  }
-
-  .navLinks {
-    flex-direction: row;
-    gap: 15px;
-    align-items: center;
-  }
-
-  .navLinks li {
-    margin: 0 1rem;
-  }
-
-  .carousel {
-    height: 40vh;
-    top: 100vh;
-  }
-
-  .carousel-image {
-    height: 40vh;
-  }
-
-  .card-container {
-    max-width: 450px;
-  }
-
-  footer {
-    flex-direction: row;
-    justify-content: space-around;
-  }
-
-  footer p,
-  footer a {
-    font-size: 1.25rem;
-  }
-
-  footer img {
-    width: 40px;
-    height: 40px;
-  }
-
-  .inputRegisterForm {
-    font-size: 15px;
-    height: 35px;
-  }
-
-  .labelInputRegisterForm {
-    margin-bottom: 2px;
+  .menu-button {
+    display: none; /* Ocultar en pantallas md y mayores */
   }
 }
 
+.back-button {
+  @apply absolute left-2 top-[80px] bg-[var(--color-dark-blue)] text-[var(--color-white)] p-1 border-none cursor-pointer;
+}
+
+/* Navegación */
+.nav {
+  @apply absolute top-[100%] w-full bg-[var(--color-dark-blue)] z-10 flex flex-col items-center gap-4 transition-all duration-300 ease-in-out;
+  display: none;
+}
+.nav.show {
+  display: flex;
+}
+@media (min-width: 768px) {
+  .nav {
+    @apply static flex-row justify-around items-center gap-8 w-full h-auto box-shadow-none;
+    display: flex;
+  }
+}
+.nav-links {
+  @apply flex flex-col gap-4;
+}
+@media (min-width: 768px) {
+  .nav-links {
+    @apply flex-row gap-8;
+  }
+}
+.nav-link, .active-link {
+  @apply no-underline text-[var(--color-white)] text-sm transition-colors duration-300;
+}
+.nav-link:hover, .active-link {
+  @apply text-gray-200 border-b-2 border-[var(--color-white)];
+}
+
+/* Botón de logout */
+.logout-button {
+  @apply p-3 bg-[var(--color-red)] text-[var(--color-white)] h-12 w-12 flex items-center justify-center mt-4 cursor-pointer;
+  transition: background-color 0.3s;
+}
+.logout-button:hover {
+  background-color: #fc8181; /* hover:bg-red-400 */
+}
+
+/* ------------------------------------ */
+/* FOOTER */
+.footer {
+  @apply bg-[var(--color-dark-blue)] text-[var(--color-white)] flex justify-center items-center h-[15vh] p-4 flex-col;
+}
+@media (min-width: 640px) {
+  .footer {
+    @apply flex-row justify-around;
+  }
+}
+.footer-content {
+  @apply flex justify-between items-center w-full max-w-[1200px] gap-4 flex-wrap;
+}
+.footer-links {
+  @apply flex flex-col items-center gap-2;
+}
+@media (min-width: 640px) {
+  .footer-links {
+    @apply flex-row items-center;
+  }
+}
+.footer-text, .footer-link {
+  @apply text-sm text-center transition-colors duration-300;
+}
+@media (min-width: 640px) {
+  .footer-text, .footer-link {
+    @apply text-lg;
+  }
+}
+.footer-link {
+  @apply no-underline text-[var(--color-white)];
+}
+.footer-link:hover {
+  color: #63b3ed; /* hover:text-gray-200 */
+}
+.footer-icons {
+  @apply flex gap-2 justify-center items-center;
+}
+.footer-icon {
+  @apply w-8 h-8 transition-transform duration-300;
+}
+.footer-icon:hover {
+  transform: scale(1.1);
+}
+@media (min-width: 640px) {
+  .footer-icon {
+    @apply w-10 h-10;
+  }
+}
 @media (min-width: 1024px) {
-  .header {
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .nav {
-    gap: 100px;
-  }
-
-  .navLinks {
-    gap: 50px;
-  }
-
-  .card-container {
-    max-width: 500px;
-  }
-
-  .carousel {
-    height: 40vh;
-    top: 130vh;
-
-  }
-
-  .carousel-image {
-    height: 40vh;
-  }
-
-  footer p,
-  footer a {
-    font-size: 1.5rem;
-  }
-
-  .formRegisterLaptop {
-    gap: 1px;
-  }
-
-  .inputRegisterForm {
-    font-size: 15px;
-    height: 35px;
-  }
-
-  .formLoginLaptop {
-    width: 50vw;
-    height: 95vh;
-    gap: 1;
-    gap: 2rem;
-  }
-
-  .labelInputRegisterForm {
-    margin-bottom: 2px;
-  }
-
-  .divLoginLaptop {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .footer-icon {
+    @apply w-14 h-14;
   }
 }
 
-@media (min-width: 1440px) {
-  .formLoginLaptop {
-    width: 50vw;
-    height: 95vh;
-    gap: 1;
-  }
-
-  .divLoginLaptop {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .select {
-    width: 100%; /* Asegura que el select ocupe todo el ancho disponible */
-    max-width: 100%; /* Limita el ancho máximo del select */
-    overflow: hidden; /* Evita el desbordamiento de los elementos internos */
-  }
-  
-  .select option {
-    max-width: 100%; /* Limita el ancho máximo de los options */
-    overflow: hidden; /* Evita que el contenido de los options se desborde */
-    text-overflow: ellipsis; /* Muestra "..." si el contenido es demasiado largo */
-    white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
-  }
-
-  .carousel {
-    width: 100vw;
-    height: 40vh;
-    top: 80vh;
-  }
-
-  .carousel-image {
-    width: 100%;
-    height: 40vh;
-  }
-  
-  footer {
-    height: 10vh;
-  }
-
-  .swal-wide {
-    /* Puedes ajustar el porcentaje según necesites */
-    width: 60%;
-    /* O utilizar un ancho fijo en píxeles */
-  }
+/* ------------------------------------ */
+/* CARRUSEL GENERAL */
+.carousel-container, .accounts-carousel-container {
+  @apply bg-[var(--color-gray-light)] rounded-xl flex flex-col justify-center items-center p-5 w-full max-w-[600px] my-8 mx-auto relative;
 }
-
-@media (min-width: 2560px) {
-
-  .card-front img,
-  .card-back img {
-    width: 700px;
-    height: 280px;
-    border-radius: 20px;
-  }
-
-  .card-front,
-  .card-back {
-    width: 700px;
-    height: 280px;
-    border-radius: 20px;
-  }
-
-  .card-container {
+.carousel-cards, .accounts-carousel-inner {
+  @apply flex transition-transform duration-700 ease-in-out w-full;
+}
+.carousel-card, .accounts-carousel-card {
+  @apply min-w-full flex justify-center items-center cursor-pointer;
+}
+@media (min-width: 640px) {
+  .carousel-container, .accounts-carousel-container {
     max-width: 90%;
   }
-
-  .carousel{
-    top: 60vh;
+}
+@media (min-width: 768px) {
+  .carousel-container, .accounts-carousel-container {
+    max-width: 80%;
   }
+}
+@media (min-width: 1024px) {
+  .carousel-container, .accounts-carousel-container {
+    max-width: 70%;
+  }
+}
+@media (min-width: 1280px) {
+  .carousel-container, .accounts-carousel-container {
+    max-width: 60%;
+  }
+}
+@media (min-width: 1536px) {
+  .carousel-container, .accounts-carousel-container {
+    max-width: 50%;
+  }
+}
 
+/* ------------------------------------ */
+/* ESTILOS PARA TARJETAS */
+.card {
+  @apply w-full max-w-[300px] h-auto rounded-lg relative bg-center bg-cover bg-no-repeat shadow-lg;
+}
+@media (min-width: 640px) {
+  .card {
+    @apply max-w-[350px];
+  }
+}
+@media (min-width: 768px) {
+  .card {
+    @apply max-w-[400px];
+  }
+}
+@media (min-width: 1024px) {
+  .card {
+    @apply max-w-[450px];
+  }
+}
+@media (min-width: 1280px) {
+  .card {
+    @apply max-w-[500px];
+  }
+}
+@media (min-width: 1536px) {
+  .card {
+    @apply max-w-[550px];
+  }
+}
+@media (min-width: 2560px) {
+  .card {
+    @apply max-w-[700px];
+  }
+}
+.card-front, .card-back {
+  @apply w-full h-full rounded-lg bg-center bg-cover bg-no-repeat;
+}
+.card-content {
+  @apply flex flex-col justify-end pb-4 items-center gap-2 w-full h-full text-center;
+}
+.card-details, .card-number, .cardholder, .card-dates, .cvv {
+  @apply text-sm font-bold;
+}
+.cvv {
+  @apply absolute bottom-7 right-5 text-xs;
+}
+
+/* ------------------------------------ */
+/* ESTILOS DEL BOTÓN */
+.next-button {
+  @apply mt-4 text-[var(--color-white)] bg-[var(--color-blue-dark)] p-3 text-xl rounded-lg transition-transform transform-gpu;
+}
+.next-button:hover {
+  @apply bg-[var(--color-blue-light)] transform-y-[-2px];
+}
+
+/* ------------------------------------ */
+/* MEDIAS QUERIES */
+@media (min-width: 640px) {
+  .header {
+    @apply justify-between;
+  }
 }

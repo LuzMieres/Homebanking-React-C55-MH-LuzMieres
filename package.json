@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "@sweetalert2/theme-borderless": "^5.0.18",
     "axios": "^1.7.5",
+    "postcss-import": "^16.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.1.2",
@@ -35,7 +36,7 @@
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
     "postcss": "^8.4.41",
-    "tailwindcss": "^3.4.10",
+    "tailwindcss": "^3.4.13",
     "vite": "^5.4.1"
   }
 }
