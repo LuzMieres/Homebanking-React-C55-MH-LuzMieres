@@ -71,7 +71,7 @@ function AccountsData() {
       <div className="flex flex-col items-center mt-8">
         <button
           onClick={handleRequestNewAccount}
-          className={`absolute bottom-[-310px] md:bottom-[-130px] lg:bottom-[-320px] xl:bottom-[-130px] 2xl:bottom-[420px] 2xl:text-3xl p-3 rounded text-white ${
+          className={`absolute bottom-[0px] md:bottom-[0px] lg:bottom-[170px] xl:bottom-[470px] 2xl:bottom-[1060px] 2xl:text-3xl p-3 rounded text-white ${
             isMaxAccountsReached ? "bg-gray-400 cursor-not-allowed" : "bg-blue-800 text-white hover:bg-blue-600"
           }`}
           disabled={isMaxAccountsReached} // Deshabilitar si ya alcanzó el límite de cuentas
@@ -81,7 +81,7 @@ function AccountsData() {
         
         {/* Mostrar mensaje de error si el cliente ya tiene el máximo de cuentas permitidas */}
         {isMaxAccountsReached && (
-          <p className="text-red-500 mt-2 absolute bottom-[-340px] md:bottom-[-160px] lg:bottom-[-350px] xl:bottom-[-160px] 2xl:bottom-[350px] 2xl:text-3xl">
+          <p className="text-red-500 mt-2 absolute bottom-[60px] md:bottom-[60px] lg:bottom-[540px] xl:bottom-[-160px] 2xl:bottom-[960px] 2xl:text-xl">
             You already have {accountLimit} accounts, you can't request more.
           </p>
         )}
