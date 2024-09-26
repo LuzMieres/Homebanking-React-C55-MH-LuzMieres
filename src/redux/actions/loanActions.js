@@ -62,7 +62,7 @@ export const loadClientLoans = createAsyncThunk(
     }
 
     try {
-      const response = await axios.get("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/loans/client-loans", {
+      const response = await axios.get("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/loans/clientloans", {
         headers: {
           Authorization: `Bearer ${token}`
         }
