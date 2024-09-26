@@ -464,6 +464,7 @@ main {
   align-items: center;
   margin-top: 1rem; /* Espacio adicional arriba */
   margin-left: 20px;
+  margin-bottom: 1rem;
 }
 
 /* Ajuste en el estilo del botón de logout */

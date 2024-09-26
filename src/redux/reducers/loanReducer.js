@@ -14,10 +14,7 @@ const loanReducer = createReducer(initialState, (builder) => {
       state.status = "loading";
     })
     .addCase(requestNewLoanAction.fulfilled, (state, action) => {
-      console.log("Nuevo préstamo creado:", action.payload);
-      // Asegúrate de que los datos del préstamo estén correctos en la respuesta
-      const newLoan = action.payload;
-      state.loans.push(newLoan); // Agrega el nuevo préstamo a la lista de préstamos
+      state.loans.push(action.payload); // Agrega el nuevo préstamo a la lista de préstamos
       state.status = "succeeded"; 
     })
     .addCase(requestNewLoanAction.rejected, (state, action) => {
@@ -33,13 +30,12 @@ const loanReducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadClientLoans.rejected, (state, action) => {
       state.status = "failed";
-      state.error = action.payload;
+      state.error = action.payload; // Asegúrate de que el error esté aquí
     })
     .addCase(loadCurrentUserAction.fulfilled, (state, action) => {
       // Cuando se carga el cliente, actualiza la lista de préstamos
       state.loans = action.payload.loans;
     });
 });
-
 
 export default loanReducer;
