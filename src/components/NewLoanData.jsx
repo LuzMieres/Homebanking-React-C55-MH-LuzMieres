@@ -12,16 +12,19 @@ const availableLoans = [
     name: "Mortgage",
     maxAmount: 500000,
     payments: [12, 24, 36, 48, 60, 72],
+    interestRate: 20 // Porcentaje de interés
   },
   {
     name: "Personal",
     maxAmount: 100000,
     payments: [6, 12, 24],
+    interestRate: 15 // Porcentaje de interés
   },
   {
     name: "Automotive",
     maxAmount: 300000,
     payments: [6, 12, 24, 36],
+    interestRate: 18 // Porcentaje de interés
   },
 ];
 
@@ -97,7 +100,7 @@ function NewLoanData() {
     setRawAmount(enteredAmount); // Guardar el valor sin formato
 
     enteredAmount = enteredAmount ? parseFloat(enteredAmount) : ''; // Convertir a número si no está vacío
-    const formattedAmount = formatAmountToARS(enteredAmount); // Formatear para mostrar en el input
+    const formattedAmount = enteredAmount ? formatAmountToARS(enteredAmount) : ''; // Formatear solo si hay valor
     setFormData(prevState => ({
       ...prevState,
       amount: formattedAmount,
@@ -128,6 +131,11 @@ function NewLoanData() {
       return '';
     }
     return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
+  }
+
+  // Calcular el total con intereses
+  function calculateTotalWithInterest(amount, interestRate) {
+    return amount + (amount * interestRate / 100);
   }
 
   // Manejar cambio en el número de pagos
@@ -161,9 +169,13 @@ function NewLoanData() {
       return;
     }
 
+    const rawAmountValue = parseFloat(rawAmount); // Obtener el valor numérico del monto solicitado
+    const totalWithInterest = calculateTotalWithInterest(rawAmountValue, selectedLoan.interestRate);
+
     const newLoan = {
       loanName: formData.name,
-      amount: parseFloat(rawAmount), // Usar el valor sin formato
+      amount: rawAmountValue, // El monto solicitado por el cliente
+      totalAmount: totalWithInterest, // Total con intereses calculado
       payments: formData.payments,
       destinationAccountNumber: formData.sourceAccount,
     };
