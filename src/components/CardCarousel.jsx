@@ -10,7 +10,7 @@ const CardCarousel = ({ cards, selectedCardType, handleCardTypeChange }) => {
   };
 
   return (
-    <div className="bg-gray-300 rounded-xl flex flex-col justify-center items-center p-[20px] w-full md:w-[90%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%] mx-auto my-4">
+    <div className="bg-gray-300 rounded-xl flex flex-col justify-center items-center p-[20px] w-full md:w-[90%] lg:w-[80%] xl:w-[60%] 2xl:w-[50%] mx-auto my-4">
       {/* Contenedor principal para centrar la tarjeta */}
       <div className="w-full lg:h-[400px] flex justify-center items-center overflow-hidden">
         <div

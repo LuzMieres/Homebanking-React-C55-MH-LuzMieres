@@ -2,13 +2,6 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Estilos base para todos los tamaños de pantalla */
-.header,
-.footer {
-  width: 100vw;
-  box-sizing: border-box;
-}
-
 .scroll-hidden::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
 }
@@ -75,6 +68,29 @@ h2 {
 .navLinks a:hover {
   color: #00b2ff;
   /* Azul claro BBVA */
+}
+
+/* styles.css */
+
+/* Asegurar que el body y el contenedor principal ocupen toda la altura de la pantalla */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* Estilo base para el contenedor principal */
+.flex {
+  display: flex;
+}
+
+/* Estilo para que el contenedor principal crezca para ocupar el espacio disponible */
+.flex-grow {
+  flex-grow: 1;
+}
+
+/* Asegurar que el contenedor principal tenga una altura mínima de la pantalla */
+.min-h-screen {
+  min-height: 100vh;
 }
 
 .footer {

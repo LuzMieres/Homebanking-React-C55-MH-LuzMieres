@@ -5,17 +5,17 @@ import '../styles/style.css';
 import Footer from '../components/Footer';
 
 function MainLayout() {
-  const [showNav, setShowNav] = useState(false);
-
   return (
-    <div className="flex flex-col min-h-screen"> {/* Contenedor principal que ocupa toda la pantalla */}
-      <Header showNav={showNav} toggleNav={() => setShowNav(!showNav)} />
-      
-      <div className={`flex-grow w-full ${showNav ? 'overflow-hidden' : ''}`}> {/* Contenedor del contenido principal */}
+    <div className="flex flex-col min-h-screen"> {/* Contenedor principal con altura mínima de pantalla completa */}
+      <Header /> {/* Header estático en la parte superior */}
+
+      {/* Contenedor del contenido principal que crece con el contenido */}
+      <main className="flex-grow w-full"> 
         <Outlet />
-      </div>
-      
-      <Footer className="absolute top-[170vh] md:top-[150vh] lg:top-[180vh] 2xl:top-[120vh]" /> {/* Footer se coloca automáticamente al final del contenedor principal */}
+      </main>
+
+      {/* Footer pegajoso al final de la página */}
+      <Footer />
     </div>
   );
 }
