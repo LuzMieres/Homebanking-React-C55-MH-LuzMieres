@@ -73,7 +73,7 @@ function CardsData() {
   const isMaxCardsReached = cardCountByType >= cardLimitPerType[selectedCardType];
 
   return (
-    <main className="contenedorPrincipalCards flex flex-col w-full justify-center items-center min-h-[130vh] overflow-hidden mt-20px">
+    <main className="contenedorPrincipalCards flex flex-col w-full justify-center items-center min-h-[130vh] overflow-hidden md:mt-[2opx]">
       {/* Inputs para seleccionar el tipo de tarjeta */}
       <div className="flex items-center justify-center mb-4">
         <label className="flex items-center gap-2 mx-2 text-sm lg:text-lg 2xl:text-xl">
