@@ -9,20 +9,28 @@ import '../styles/style.css';
 function LoansData() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { client, status, error } = useSelector((state) => state.currentUser); // Asegúrate de que currentUser es correcto en tu store
+  const { client, status, error } = useSelector((state) => state.currentUser); // Verifica que el estado sea correcto
   const { loans, status: loansStatus } = useSelector((state) => state.loans); // Asegúrate de que loans está correctamente mapeado en tu store
 
   useEffect(() => {
+    // Verifica que el cliente esté cargado y la lista de préstamos esté en estado idle antes de cargar
     if (status === 'idle') {
       dispatch(loadCurrentUserAction());
     }
   }, [dispatch, status]);
 
   useEffect(() => {
+    // Carga los préstamos del cliente si el cliente está cargado y los préstamos están en estado idle
     if (client && loansStatus === 'idle') {
-      dispatch(loadClientLoans()); // Carga los préstamos del cliente
+      dispatch(loadClientLoans());
     }
   }, [dispatch, client, loansStatus]);
+
+  // Logs para verificar el estado de los datos
+  useEffect(() => {
+    console.log("Datos del cliente:", client);
+    console.log("Lista de préstamos:", loans);
+  }, [client, loans]);
 
   if (status === 'loading' || loansStatus === 'loading') {
     return <div className="text-center text-gray-600">Loading...</div>;
@@ -100,7 +108,6 @@ function LoansData() {
                 </tr>
               ))}
             </tbody>
-
           </table>
         </div>
       ) : (

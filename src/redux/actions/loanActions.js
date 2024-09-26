@@ -68,6 +68,7 @@ export const loadClientLoans = createAsyncThunk(
         }
       });
 
+      console.log("Datos de los préstamos cargados:", response.data);
       return response.data; // Devuelve los préstamos del cliente
     } catch (error) {
       console.error("Error al cargar los préstamos del cliente:", error);
@@ -77,4 +78,3 @@ export const loadClientLoans = createAsyncThunk(
     }
   }
 );
-
