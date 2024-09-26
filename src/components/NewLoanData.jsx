@@ -85,8 +85,8 @@ function NewLoanData() {
   }
 
   function handleAmountChange(event) {
-    let enteredAmount = parseFloat(event.target.value.replace(/[^0-9]/g, ''));
-    enteredAmount = isNaN(enteredAmount) ? '' : enteredAmount;
+    let enteredAmount = event.target.value.replace(/[^0-9]/g, ''); // Eliminar caracteres no numéricos
+    enteredAmount = enteredAmount ? parseFloat(enteredAmount) : ''; // Convertir a número si no está vacío
     setFormData(prevState => ({
       ...prevState,
       amount: enteredAmount,
@@ -97,6 +97,14 @@ function NewLoanData() {
     } else {
       setAmountError(false);
     }
+  }
+
+  function handleAmountBlur() {
+    const formattedAmount = formatAmountToARS(formData.amount);
+    setFormData(prevState => ({
+      ...prevState,
+      amount: formattedAmount,
+    }));
   }
 
   function formatAmountToARS(amount) {
@@ -191,8 +199,9 @@ function NewLoanData() {
               type="text"
               id="amount"
               name="amount"
-              value={formatAmountToARS(formData.amount)}
-              onChange={handleAmountChange}
+              value={formData.amount}
+              onChange={handleAmountChange} // Control de cambio sin formato
+              onBlur={handleAmountBlur} // Aplicar formato al perder foco
             />
             {selectedLoan && (
               <p className={`amount-info ${amountError ? 'text-red-500' : 'text-gray-500'}`}>

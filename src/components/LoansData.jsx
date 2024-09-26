@@ -39,55 +39,20 @@ function LoansData() {
     return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
   }
 
-  function getInterestRate(payments) {
-    if (payments === 12) {
-      return 1.20;
-    } else if (payments > 12) {
-      return 1.25;
-    } else {
-      return 1.15;
-    }
-  }
-
-  function calculateTotalAmount(loan) {
-    const interestRate = getInterestRate(loan.payments);
-    return formatAmountToARS(loan.amount * interestRate);
-  }
-
-  function calculateCreditedAmount(loan) {
-    return formatAmountToARS(loan.amount);
-  }
-
-  function calculateNextPaymentDueDate(loanDate) {
-    const loanDateObj = new Date(loanDate);
-    loanDateObj.setDate(loanDateObj.getDate() + 30);
-    return loanDateObj.toLocaleDateString('es-AR');
-  }
-
-  function getLoanRequestDate() {
-    return new Date().toLocaleDateString('es-AR');
-  }
-
   function handleRowClick(loan) {
-    const interestRate = getInterestRate(loan.payments);
-    const totalAmount = formatAmountToARS(loan.amount * interestRate);
-    const remainingPayments = loan.payments;
-    const loanRequestDate = getLoanRequestDate();
-    const nextPaymentDueDate = calculateNextPaymentDueDate(new Date());
+    // Obtener el total con intereses directamente desde el objeto `loan` si ya viene calculado desde el backend
+    const totalAmount = formatAmountToARS(loan.totalAmount);
 
     Swal.fire({
       title: 'Loan Details',
       html: `
         <div style="text-align: left;">
           <p><strong>Loan Type:</strong> ${loan.loanType || loan.name}</p>
-          <p><strong>Amount:</strong> ${formatAmountToARS(loan.amount)}</p>
+          <p><strong>Requested Amount:</strong> ${formatAmountToARS(loan.amount)}</p>
           <p><strong>Credited Amount:</strong> ${formatAmountToARS(loan.amount)}</p>
           <p><strong>Total with Interest:</strong> ${totalAmount}</p>
-          <p><strong>Payments:</strong> ${Array.isArray(loan.payments) ? loan.payments.join(', ') : loan.payments}</p>
-          <p><strong>Remaining Payments:</strong> ${remainingPayments}</p>
+          <p><strong>Payments:</strong> ${loan.payments}</p>
           <p><strong>Deposit Account:</strong> ${selectedAccount || 'N/A'}</p>
-          <p><strong>Loan Request Date:</strong> ${loanRequestDate}</p>
-          <p><strong>Next Payment Due Date:</strong> ${nextPaymentDueDate}</p>
         </div>
       `,
       icon: 'info',
@@ -111,7 +76,7 @@ function LoansData() {
             <thead>
               <tr className="loans-table-header">
                 <th className="loans-table-header-cell">LOAN TYPE</th>
-                <th className="loans-table-header-cell">AMOUNT</th>
+                <th className="loans-table-header-cell">REQUESTED AMOUNT</th>
                 <th className="loans-table-header-cell">CREDITED AMOUNT</th>
                 <th className="loans-table-header-cell">TOTAL WITH INTEREST</th>
                 <th className="loans-table-header-cell">PAYMENTS</th>
@@ -127,8 +92,8 @@ function LoansData() {
                   <td className="loans-table-cell">{loan.loanType || loan.name}</td>
                   <td className="loans-table-cell">{formatAmountToARS(loan.amount)}</td>
                   <td className="loans-table-cell">{formatAmountToARS(loan.amount)}</td>
-                  <td className="loans-table-cell">{calculateTotalAmount(loan)}</td>
-                  <td className="loans-table-cell">{Array.isArray(loan.payments) ? loan.payments.join(', ') : loan.payments}</td>
+                  <td className="loans-table-cell">{formatAmountToARS(loan.totalAmount)}</td> {/* Mostramos el total con intereses directamente del backend */}
+                  <td className="loans-table-cell">{loan.payments}</td>
                 </tr>
               ))}
             </tbody>

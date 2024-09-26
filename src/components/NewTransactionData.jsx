@@ -23,7 +23,7 @@ function NewTransactionData() {
   const [destinationAccountError, setDestinationAccountError] = useState('');
   const [serverError, setServerError] = useState('');
   const [contactAccounts, setContactAccounts] = useState(savedAccounts);
-  const [destinationAccountBalance, setDestinationAccountBalance] = useState(null); // Estado para el saldo de la cuenta de destino
+  const [destinationAccountBalance, setDestinationAccountBalance] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -100,10 +100,38 @@ function NewTransactionData() {
   }
 
   function handleAmountChange(event) {
+    // Obtener el valor ingresado sin caracteres no numéricos
     let enteredAmount = event.target.value.replace(/[^0-9]/g, '');
     const numericValue = parseFloat(enteredAmount);
 
-    if (isNaN(numericValue)) {
+    // Actualizar el estado con el valor numérico sin formato
+    setFormData(prevState => ({
+      ...prevState,
+      amount: enteredAmount,
+    }));
+
+    // Validar si el valor es numérico y mayor a cero
+    if (isNaN(numericValue) || numericValue <= 0) {
+      setAmountInvalid(true);
+      setAmountError(false);
+      return;
+    }
+
+    // Verificar si el monto excede el saldo disponible
+    if (selectedAccount && numericValue > selectedAccount.balance) {
+      setAmountError(true);
+    } else {
+      setAmountError(false);
+    }
+
+    setAmountInvalid(false);
+  }
+
+  // Nueva función para aplicar el formato solo al salir del campo
+  function handleAmountBlur() {
+    const numericValue = parseFloat(formData.amount);
+
+    if (isNaN(numericValue) || numericValue <= 0) {
       setFormData(prevState => ({
         ...prevState,
         amount: '',
@@ -118,14 +146,6 @@ function NewTransactionData() {
       ...prevState,
       amount: formattedAmount,
     }));
-
-    if (selectedAccount && numericValue > selectedAccount.balance) {
-      setAmountError(true);
-    } else {
-      setAmountError(false);
-    }
-
-    setAmountInvalid(false);
   }
 
   function updateAccountBalances(sourceAccountNumber, destinationAccountNumber, amount) {
@@ -330,7 +350,7 @@ function NewTransactionData() {
                   .filter(account => account.number !== formData.sourceAccount)
                   .map(account => (
                     <option className='form-option' key={account.number} value={account.number}>{account.number}</option>
-                ))}
+                  ))}
               </select>
             ) : formData.accountType === 'Other' ? (
               <>
@@ -373,6 +393,7 @@ function NewTransactionData() {
               name="amount"
               value={formData.amount}
               onChange={handleAmountChange}
+              onBlur={handleAmountBlur} // Evento que aplica el formato al salir del input
               disabled={!selectedAccount}
             />
             {amountInvalid && (

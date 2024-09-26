@@ -325,88 +325,85 @@ main {
 
 /* Estilo general del contenedor del carrusel */
 .carousel-container {
-  background-color: #e5e7eb; /* bg-gray-300 */
-  border-radius: 0.75rem; /* rounded-xl */
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   width: 100%;
-  max-width: 600px;
-  margin: 2rem auto;
+  overflow: hidden; /* Ocultar cualquier contenido que desborde */
   position: relative;
 }
 
-/* Estilo del contenedor de las tarjetas del carrusel */
 .carousel-cards-container {
-  width: 100%;
-  overflow: hidden;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden; /* Ocultar las tarjetas fuera de la vista */
+  width: 100%;
 }
 
-/* Contenedor de tarjetas en movimiento */
 .carousel-cards {
   display: flex;
-  transition: transform 0.7s ease-in-out;
-  width: 100%;
+  transition: transform 0.5s ease-in-out; /* Transición suave al cambiar de tarjeta */
+  width: 100%; /* Asegúrate de que el ancho del contenedor se ajuste al número de tarjetas */
 }
 
-/* Estilo para el contenedor de la tarjeta que se voltea */
 .carousel-card {
-  position: relative;
-  width: 100%;
-  height: auto;
-  transition: transform 0.6s;
-  transform-style: preserve-3d; /* Preserva la transformación 3D para hijos */
+  flex: 0 0 100%; /* Cada tarjeta ocupa el 100% del contenedor para mostrarse una a la vez */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  backface-visibility: hidden; /* Ocultar dorso cuando se ve el frente */
+  transform-style: preserve-3d; /* Habilitar 3D */
+  transition: transform 0.6s; /* Transición suave de rotación */
 }
 
-/* Estilo general para el contenedor de la tarjeta */
 .card-pair {
   position: relative;
   width: 100%;
   height: auto;
-  perspective: 1000px; /* Necesario para la rotación en 3D */
+  perspective: 1000px; /* Necesario para rotación 3D */
+}
+
+/* Estilo adicional para tarjetas volteadas */
+.carousel-card.flipped .card-front {
+  transform: rotateY(180deg); /* Rota el frente al voltear */
+}
+
+.carousel-card.flipped .card-back {
+  transform: rotateY(0deg); /* Muestra el dorso */
 }
 
 .card {
-  width: 100%;
-  max-width: 300px;
-  height: auto;
-  border-radius: 1rem;
-  position: relative;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Estilo para el frente y dorso de la tarjeta */
-.card-front,
-.card-back {
   position: absolute;
   width: 100%;
-  height: 100%;
-  backface-visibility: hidden; /* Oculta el dorso cuando se ve el frente */
+  height: auto;
+  backface-visibility: hidden; /* Ocultar dorso cuando se ve el frente */
   border-radius: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilo para la tarjeta delantera */
 .card-front {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transform: rotateY(0deg); /* Frente se muestra por defecto */
+  transform: rotateY(0deg); /* Muestra el frente por defecto */
 }
 
-/* Estilo para la tarjeta trasera */
 .card-back {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transform: rotateY(180deg); /* Parte trasera se muestra al voltear */
+  transform: rotateY(180deg); /* Oculta el dorso por defecto */
+}
+
+.next-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #1d4ed8; /* bg-blue-800 */
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.next-button:hover {
+  background-color: #2563eb; /* hover:bg-blue-600 */
 }
 
 /* Estilo para el contenedor de contenido de la tarjeta */
@@ -557,6 +554,8 @@ main {
 /* Contenedor interno para las cuentas */
 .accounts-carousel-inner {
   display: flex;
+  justify-content: center;
+  align-items: center;
   transition: transform 0.7s ease-in-out;
   width: 100%;
 }
