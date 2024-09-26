@@ -444,9 +444,45 @@ main {
   font-weight: bold;
 }
 
-.account-creation-date{
-  color: black;
+/* Añadir esto en style.css */
+.account-card p.account-number {
+  color: black; /* Cambia el color del número de cuenta a negro */
 }
+
+.account-card p.account-balance {
+  color: white; /* Cambia el color del balance a blanco */
+}
+
+.account-card p.account-creation-date {
+  color: black; /* Cambia el color de la fecha de creación a negro */
+}
+
+/* Estilo adicional para el botón de logout */
+.logout-wrapper {
+  display: flex;
+  justify-content: center; /* Centrar el botón de logout */
+  align-items: center;
+  margin-top: 1rem; /* Espacio adicional arriba */
+}
+
+/* Ajuste en el estilo del botón de logout */
+.logout-button {
+  background-color: #e53e3e; /* Color rojo */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px; /* Separar del resto de la navegación */
+}
+
+.logout-button svg {
+  fill: #ffffff; /* Color blanco para el ícono */
+}
+
+
 
 @media (min-width: 640px) {
   .accounts-carousel-container {

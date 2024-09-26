@@ -35,23 +35,24 @@ const AccountsCarousel = ({ accounts, onAccountClick }) => {
         >
           {accounts.map((account) => (
             <div
-              key={account.id}
-              className="accounts-carousel-card"
-              onClick={() => onAccountClick(account.id)}
-            >
-              {/* Contenedor de la tarjeta de cuenta */}
-              <div className="account-card">
-                <p className="account-number">
-                  Account Number: {account.number}
-                </p>
-                <p className="account-balance">
-                  Balance: {new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(account.balance)}
-                </p>
-                <p className="account-creation-date">
-                  Creation Date: {account.creationDate || new Date().toLocaleDateString()}
-                </p>
-              </div>
+            key={account.id}
+            className="accounts-carousel-card"
+            onClick={() => onAccountClick(account.id)}
+          >
+            {/* Contenedor de la tarjeta de cuenta */}
+            <div className="account-card">
+              <p className="account-number" style={{ color: 'black' }}>
+                Account Number: {account.number}
+              </p>
+              <p className="account-balance" style={{ color: 'white' }}>
+                Balance: {new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(account.balance)}
+              </p>
+              <p className="account-creation-date">
+                Creation Date: {account.creationDate || new Date().toLocaleDateString()}
+              </p>
             </div>
+          </div>
+          
           ))}
         </div>
       </div>
