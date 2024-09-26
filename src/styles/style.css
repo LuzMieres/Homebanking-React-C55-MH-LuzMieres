@@ -484,6 +484,11 @@ main {
   fill: #ffffff; /* Color blanco para el ícono */
 }
 
+.card-type-selector{
+  display: flex;
+  gap: 30px;
+}
+
 
 
 @media (min-width: 640px) {
