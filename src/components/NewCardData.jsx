@@ -13,6 +13,7 @@ function NewCardData() {
   });
   const [errors, setErrors] = useState({}); // Estado para errores de validación
   const [availableColors, setAvailableColors] = useState([]); // Estado para colores disponibles
+  const [availableCardTypes, setAvailableCardTypes] = useState(['DEBIT', 'CREDIT']); // Estado para tipos de tarjetas disponibles
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { client, status, error } = useSelector((state) => state.currentUser);
@@ -39,6 +40,34 @@ function NewCardData() {
       setAvailableColors([]);
     }
   }, [formData.cardType, client]);
+
+  useEffect(() => {
+    // Filtrar tipos de tarjeta disponibles en función de las tarjetas ya solicitadas
+    if (client) {
+      const maxColorsPerType = 3; // Máximo número de tarjetas por tipo
+      const cardTypes = ['DEBIT', 'CREDIT'];
+      
+      // Verificar cuántas tarjetas de cada tipo y color tiene el cliente
+      const cardTypeAvailability = cardTypes.reduce((acc, type) => {
+        const colorsOwned = client.cards.filter(card => card.type === type).length;
+        if (colorsOwned < maxColorsPerType) {
+          acc.push(type);
+        }
+        return acc;
+      }, []);
+      
+      setAvailableCardTypes(cardTypeAvailability);
+
+      // Si el tipo de tarjeta seleccionado ya no está disponible, resetear el tipo seleccionado
+      if (!cardTypeAvailability.includes(formData.cardType)) {
+        setFormData(prevState => ({
+          ...prevState,
+          cardType: '',
+          cardColor: ''
+        }));
+      }
+    }
+  }, [client]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -126,8 +155,9 @@ function NewCardData() {
               onChange={handleInputChange}
             >
               <option value="" disabled>Select a card type</option>
-              <option value="DEBIT">Debit</option>
-              <option value="CREDIT">Credit</option>
+              {availableCardTypes.map(type => (
+                <option key={type} value={type}>{type.charAt(0) + type.slice(1).toLowerCase()}</option>
+              ))}
             </select>
             {errors.cardType && <p className="text-red-500 text-sm">{errors.cardType}</p>}
           </div>

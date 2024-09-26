@@ -9,8 +9,23 @@ const AccountsCarousel = ({ accounts, onAccountClick }) => {
     setCurrentAccountIndex((prevIndex) => (prevIndex + 1) % accounts.length);
   };
 
+  const prevAccount = () => {
+    setCurrentAccountIndex((prevIndex) =>
+      prevIndex === 0 ? accounts.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
     <div className="accounts-carousel-container">
+      {/* Botón anterior */}
+      <button
+        onClick={prevAccount}
+        className="prev-button"
+        disabled={accounts.length <= 1} // Deshabilitar el botón si hay una o ninguna cuenta
+      >
+        Prev
+      </button>
+
       {/* Contenedor principal para centrar la cuenta */}
       <div className="accounts-carousel">
         <div
@@ -46,7 +61,7 @@ const AccountsCarousel = ({ accounts, onAccountClick }) => {
         className="next-button"
         disabled={accounts.length <= 1} // Deshabilitar el botón si hay una o ninguna cuenta
       >
-        Next Account
+        Next
       </button>
     </div>
   );

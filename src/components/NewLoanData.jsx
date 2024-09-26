@@ -85,10 +85,11 @@ function NewLoanData() {
   }
 
   function handleAmountChange(event) {
-    const enteredAmount = parseFloat(event.target.value.replace(/[^0-9.]/g, ''));
+    let enteredAmount = parseFloat(event.target.value.replace(/[^0-9]/g, ''));
+    enteredAmount = isNaN(enteredAmount) ? '' : enteredAmount;
     setFormData(prevState => ({
       ...prevState,
-      amount: event.target.value,
+      amount: enteredAmount,
     }));
 
     if (selectedLoan && enteredAmount > selectedLoan.maxAmount) {
@@ -96,6 +97,13 @@ function NewLoanData() {
     } else {
       setAmountError(false);
     }
+  }
+
+  function formatAmountToARS(amount) {
+    if (typeof amount !== 'number' || isNaN(amount)) {
+      return '';
+    }
+    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
   }
 
   function handlePaymentsChange(event) {
@@ -156,13 +164,6 @@ function NewLoanData() {
     return <div className="text-center text-gray-600">Loading...</div>;
   }
 
-  function formatAmountToARS(amount) {
-    if (typeof amount !== 'number' || isNaN(amount)) {
-      return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
-    }
-    return "";
-  }
-
   return (
     <div className="new-loan-container">
       <div className="loan-form-container">
@@ -190,7 +191,7 @@ function NewLoanData() {
               type="text"
               id="amount"
               name="amount"
-              value={formData.amount}
+              value={formatAmountToARS(formData.amount)}
               onChange={handleAmountChange}
             />
             {selectedLoan && (

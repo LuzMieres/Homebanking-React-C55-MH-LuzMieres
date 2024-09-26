@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction';
 
 export const transactionsArray = [];
-export const savedAccounts = JSON.parse(localStorage.getItem('savedAccounts')) || []; 
+export const savedAccounts = JSON.parse(localStorage.getItem('savedAccounts')) || [];
 
 function NewTransactionData() {
   const [formData, setFormData] = useState({
@@ -23,6 +23,7 @@ function NewTransactionData() {
   const [destinationAccountError, setDestinationAccountError] = useState('');
   const [serverError, setServerError] = useState('');
   const [contactAccounts, setContactAccounts] = useState(savedAccounts);
+  const [destinationAccountBalance, setDestinationAccountBalance] = useState(null); // Estado para el saldo de la cuenta de destino
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -83,35 +84,85 @@ function NewTransactionData() {
     } else {
       setDestinationAccountError('');
     }
+
+    // Si es una cuenta propia, obtener el saldo de la cuenta de destino
+    if (formData.accountType === 'Own') {
+      const destinationAcc = client.accounts.find(a => a.number === destinationAccount);
+      setDestinationAccountBalance(destinationAcc ? destinationAcc.balance : null);
+    }
+  }
+
+  function formatAmountToARS(amount) {
+    if (typeof amount !== 'number' || isNaN(amount)) {
+      return '';
+    }
+    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
   }
 
   function handleAmountChange(event) {
-    const enteredAmount = event.target.value;
-    const cleanedAmount = enteredAmount.replace(/[^0-9.]/g, '');
+    let enteredAmount = event.target.value.replace(/[^0-9]/g, '');
+    const numericValue = parseFloat(enteredAmount);
 
-    setFormData(prevState => ({
-      ...prevState,
-      amount: cleanedAmount,
-    }));
-
-    if (!/^\d*\.?\d*$/.test(cleanedAmount) || cleanedAmount === '') {
+    if (isNaN(numericValue)) {
+      setFormData(prevState => ({
+        ...prevState,
+        amount: '',
+      }));
       setAmountInvalid(true);
-    } else {
-      setAmountInvalid(false);
+      setAmountError(false);
+      return;
     }
 
-    const numericValue = parseFloat(cleanedAmount);
+    const formattedAmount = formatAmountToARS(numericValue);
+    setFormData(prevState => ({
+      ...prevState,
+      amount: formattedAmount,
+    }));
+
     if (selectedAccount && numericValue > selectedAccount.balance) {
       setAmountError(true);
     } else {
       setAmountError(false);
+    }
+
+    setAmountInvalid(false);
+  }
+
+  function updateAccountBalances(sourceAccountNumber, destinationAccountNumber, amount) {
+    // Actualizar el saldo de la cuenta de origen
+    const updatedAccounts = client.accounts.map(account => {
+      if (account.number === sourceAccountNumber) {
+        return {
+          ...account,
+          balance: account.balance - amount
+        };
+      } else if (account.number === destinationAccountNumber) {
+        // Si la cuenta de destino es propia, actualizar también su saldo
+        return {
+          ...account,
+          balance: account.balance + amount
+        };
+      }
+      return account;
+    });
+
+    setClient(prevState => ({
+      ...prevState,
+      accounts: updatedAccounts
+    }));
+
+    // Actualizar el saldo de la cuenta de destino si es propia
+    if (formData.accountType === 'Own') {
+      const destinationAccount = updatedAccounts.find(account => account.number === destinationAccountNumber);
+      setDestinationAccountBalance(destinationAccount.balance);
     }
   }
 
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (!formData.sourceAccount || !formData.destinationAccount || !formData.amount) {
+    const numericAmount = parseFloat(formData.amount.replace(/[^0-9.-]+/g, ''));
+    if (!formData.sourceAccount || !formData.destinationAccount || !numericAmount) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -132,7 +183,7 @@ function NewTransactionData() {
         <p>Type: <strong>${formData.accountType}</strong></p>
         <p>Source Account: <strong>${formData.sourceAccount}</strong></p>
         <p>Destination Account: <strong>${formData.destinationAccount}</strong></p>
-        <p>Amount: <strong>${formatAmountToARS(parseFloat(formData.amount))}</strong></p>
+        <p>Amount: <strong>${formData.amount}</strong></p>
       `,
       icon: 'warning',
       showCancelButton: true,
@@ -143,7 +194,7 @@ function NewTransactionData() {
         const newTransaction = {
           originAccountNumber: formData.sourceAccount,
           destinationAccountNumber: formData.destinationAccount,
-          amount: parseFloat(formData.amount),
+          amount: numericAmount,
         };
 
         axios.post("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/transactions/", newTransaction, {
@@ -158,6 +209,9 @@ function NewTransactionData() {
               icon: 'success',
               confirmButtonText: 'OK'
             }).then(() => {
+              // Actualizar saldos en el estado local
+              updateAccountBalances(formData.sourceAccount, formData.destinationAccount, numericAmount);
+
               dispatch(loadCurrentUserAction());
 
               if (formData.accountType === 'Other' && !savedAccounts.includes(formData.destinationAccount)) {
@@ -198,13 +252,6 @@ function NewTransactionData() {
     return <div className="text-center text-gray-600">Loading...</div>;
   }
 
-  function formatAmountToARS(amount) {
-    if (typeof amount !== 'number' || isNaN(amount)) {
-      return 'N/A';
-    }
-    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
-  }
-
   const isFormValid = formData.sourceAccount && formData.destinationAccount && formData.amount && !amountError && !amountInvalid;
 
   return (
@@ -212,7 +259,6 @@ function NewTransactionData() {
       <div className="transaction-form-container">
         <img className="transaction-image" src="newTransaction.png" alt="newTransaction" />
         <form onSubmit={handleSubmit} className="transaction-form">
-
           {/* Tipo de cuenta de destino */}
           <div className="account-type-container">
             <label className="account-type-label">
@@ -335,6 +381,11 @@ function NewTransactionData() {
             {selectedAccount && (
               <p className={`amount-info ${amountError ? 'text-red-500' : 'text-gray-500'}`}>
                 Available balance: {formatAmountToARS(selectedAccount.balance)}
+              </p>
+            )}
+            {formData.accountType === 'Own' && destinationAccountBalance !== null && (
+              <p className="amount-info">
+                Destination balance: {formatAmountToARS(destinationAccountBalance)}
               </p>
             )}
           </div>

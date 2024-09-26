@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import '../styles/style.css';
 
-const CardCarousel = ({ cards, selectedCardType, handleCardTypeChange }) => {
+const CardCarousel = ({ cards }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [flippedCards, setFlippedCards] = useState(Array(cards.length).fill(false));
 
   // Función para ir a la siguiente tarjeta
   const nextCard = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % cards.length);
+  };
+
+  // Función para voltear la tarjeta
+  const toggleFlip = (index) => {
+    setFlippedCards((prevState) => 
+      prevState.map((flipped, i) => (i === index ? !flipped : flipped))
+    );
   };
 
   return (
@@ -17,10 +25,11 @@ const CardCarousel = ({ cards, selectedCardType, handleCardTypeChange }) => {
           className="carousel-cards"
           style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
         >
-          {cards.map((card) => (
+          {cards.map((card, index) => (
             <div
               key={card.id}
-              className="carousel-card"
+              className={`carousel-card ${flippedCards[index] ? 'flipped' : ''}`}
+              onClick={() => toggleFlip(index)}
             >
               {/* Contenedor para mostrar frente y dorso juntos */}
               <div className="card-pair">

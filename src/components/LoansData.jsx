@@ -69,6 +69,8 @@ function LoansData() {
   }
 
   function handleRowClick(loan) {
+    const interestRate = getInterestRate(loan.payments);
+    const totalAmount = formatAmountToARS(loan.amount * interestRate);
     const remainingPayments = loan.payments;
     const loanRequestDate = getLoanRequestDate();
     const nextPaymentDueDate = calculateNextPaymentDueDate(new Date());
@@ -80,7 +82,7 @@ function LoansData() {
           <p><strong>Loan Type:</strong> ${loan.loanType || loan.name}</p>
           <p><strong>Amount:</strong> ${formatAmountToARS(loan.amount)}</p>
           <p><strong>Credited Amount:</strong> ${formatAmountToARS(loan.amount)}</p>
-          <p><strong>Total with Interest:</strong> ${calculateCreditedAmount(loan)}</p>
+          <p><strong>Total with Interest:</strong> ${totalAmount}</p>
           <p><strong>Payments:</strong> ${Array.isArray(loan.payments) ? loan.payments.join(', ') : loan.payments}</p>
           <p><strong>Remaining Payments:</strong> ${remainingPayments}</p>
           <p><strong>Deposit Account:</strong> ${selectedAccount || 'N/A'}</p>
